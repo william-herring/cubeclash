@@ -1,0 +1,17 @@
+{% extends 'base_generic.html' %}
+{% load static %}
+
+{% block title %}Log in{% endblock %}
+
+{% block head %}
+{% endblock %}
+{% block body %}
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <p><input type="submit" value="Log in"></p>
+    </form>
+    {% if invalid_details %}
+        <p>Login failed. Incorrect username and/or password</p>
+    {% endif %}
+{% endblock %}
