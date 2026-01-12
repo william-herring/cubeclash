@@ -4,14 +4,17 @@
 {% block title %}Log in{% endblock %}
 
 {% block head %}
+    <link rel="stylesheet" href="{% static 'users/styles/login.css' %}">
 {% endblock %}
 {% block body %}
-    <form method="post">
-        {% csrf_token %}
-        {{form.as_p}}
-        <p><input type="submit" value="Log in"></p>
-    </form>
-    {% if invalid_details %}
-        <p>Login failed. Incorrect username and/or password</p>
-    {% endif %}
+    <div class="login-content">
+        <div class="login-form-container">
+            <h1 class="placeholder-logo">[CubeClash]</h1>
+            <p>You can sign in to CubeClash using your WCA account.</p>
+            <a class="login-wca-oauth-link" href="https://www.worldcubeassociation.org/oauth/authorize?client_id=A0SCqWYHN7Mz-Q6HWzBuF8YlMpvf6rvhCob0nT4sEtQ&redirect_uri=http%3A%2F%2Flocalhost%3A8000%2F&response_type=code&scope=email">
+                <img width="40" alt="WCA Logo" src={% static 'images/wca_logo_mono_white.svg' %}>
+                <p class="login-wca-oauth-label">Authenticate with WCA</p>
+            </a>
+        </div>
+    </div>
 {% endblock %}
