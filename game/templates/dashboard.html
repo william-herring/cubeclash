@@ -1,0 +1,36 @@
+{% extends 'base_generic.html' %}
+{% load static %}
+{% load mathfilters %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'game/styles/dashboard.css' %}">
+{% endblock %}
+{% block body %}
+    <header class="dashboard-header">
+        <div>
+            <a href="/battle" class="dashboard-nav-button">Battle</a>
+            <a href="/battle/competitions" class="dashboard-nav-button">Competitions</a>
+            <a href="/rankings" class="dashboard-nav-button">Rankings</a>
+        </div>
+        <div class="dashboard-header-avatar-wrapper">
+            <a href="/profile">
+                <img class="dashboard-header-avatar" src="{{ user.avatar }}" alt="Your profile picture">
+            </a>
+        </div>
+    </header>
+    <div class="dashboard-elo-box">
+        <p class="dashboard-elo-box-username">{{ user.get_username }}</p>
+        <div class="dashboard-elo-box-display">
+            <p class="dashboard-elo-box-elo">{{ user.elo|floatformat:"0" }}</p>
+            {% if user.elo > user.previous_elo %}
+                <p class="dashboard-elo-box-improvement">+{{ user.elo|sub:user.previous_elo|floatformat:"0" }}</p>
+            {%  elif user.elo < user.previous_elo %}
+                <p class="dashboard-elo-box-regression">-{{ user.previous_elo|sub:user.elo|floatformat:"0" }}</p>
+            {% else %}
+                <p class="dashboard-elo-box-regression">No change</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

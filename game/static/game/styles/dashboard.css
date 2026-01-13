@@ -1,0 +1,71 @@
+body {
+    margin: 30px;
+}
+
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100%;
+}
+
+.dashboard-nav-button {
+    padding: 14px 18px;
+    background-color: #403939;
+    border: 1px solid #605252;
+    color: #ffffff;
+    border-radius: 45px;
+    margin-right: 8px;
+}
+
+.dashboard-nav-button:hover {
+    background-color: #453d3d;
+}
+
+.dashboard-header-avatar-wrapper {
+    margin-left: auto;
+}
+
+.dashboard-header-avatar {
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.dashboard-elo-box {
+    padding-top: 45px;
+    padding-bottom: 45px;
+}
+
+.dashboard-elo-box-display {
+    display: flex;
+    align-items: baseline;
+}
+
+.dashboard-elo-box-regression {
+    margin-left: 8px;
+    color: #938181
+}
+
+.dashboard-elo-box-improvement {
+    margin-left: 8px;
+    color: #67dc57
+}
+
+.dashboard-elo-box-regression {
+    margin-left: 8px;
+    color: #ff3c3c
+}
+
+.dashboard-elo-box-username {
+
+}
+
+.dashboard-elo-box-elo {
+    margin: 0;
+    font-size: 70px;
+}

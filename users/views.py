@@ -12,6 +12,11 @@ from .models import User
 class LoginView(TemplateView):
     template_name = 'login.html'
 
+    def get(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return redirect('/battle')
+        return super().get(request, *args, **kwargs)
+
 class AuthRedirectView(View):
     def get(self, request, *args, **kwargs):
         load_dotenv()
@@ -34,13 +39,16 @@ class AuthRedirectView(View):
             return redirect('/login')
 
         token = token_response.json()['access_token']
+        print(token)
 
         user_response = requests.get('https://www.worldcubeassociation.org/api/v0/me', headers={
             'Content-Type': 'application/json',
             'Authorization': f'Bearer {token}'
         })
+        print(user_response.status_code)
 
         data = user_response.json()['me']
+        print(data)
 
         try:
             login(request, User.objects.get(email=data['email']))
@@ -61,4 +69,4 @@ class AuthRedirectView(View):
             login(request, user)
             return redirect('/profile')
 
-        return redirect('/')
+        return redirect('/battle')
