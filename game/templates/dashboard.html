@@ -21,7 +21,7 @@
         </div>
     </header>
     <div class="dashboard-elo-box">
-        <p class="dashboard-elo-box-username">{{ user.get_username }}</p>
+        <a class="dashboard-elo-box-username" href="/users/{{ user.get_username }}">{{ user.get_username }}</a>
         <div class="dashboard-elo-box-display">
             <p class="dashboard-elo-box-elo">{{ user.elo|floatformat:"0" }}</p>
             {% if user.elo > user.previous_elo %}
@@ -32,5 +32,47 @@
                 <p class="dashboard-elo-box-regression">No change</p>
             {% endif %}
         </div>
+    </div>
+    <div class="dashboard-match-history">
+        <h2>Recent battles</h2>
+        <table class="dashboard-match-history-table">
+            <tr>
+                <th>Result</th>
+                <th>Completed</th>
+                <th>Type</th>
+                <th>Opponent</th>
+                <th>Links</th>
+            </tr>
+            <tr>
+                <td class="dashboard-match-history-table-win-cell">WIN</td>
+                <td>Today 09:30 am</td>
+                <td>Bo5</td>
+                <td><a href="/users/eg">faz2887 (1879)</a></td>
+                <td><a href="/battle/26638c2e-446c-4ef8-a980-effcbbaaa2dd/details">Details</a></td>
+            </tr>
+            <tr>
+                <td class="dashboard-match-history-table-loss-cell">LOSS</td>
+                <td>Today 09:13 am</td>
+                <td>Bo5</td>
+                <td><a href="/users/eg">jacobjoshi (1760)</a></td>
+                <td><a href="/battle/26638c2e-446c-4ef8-a980-effcbbaaa2dd/details">Details</a></td>
+            </tr>
+            <tr>
+                <td class="dashboard-match-history-table-loss-cell">LOSS</td>
+                <td>13 Jan 04:45 pm</td>
+                <td>Bo5</td>
+                <td><a href="/users/eg">tymonkol (2957)</a></td>
+                <td>
+                    <a href="/battle/26638c2e-446c-4ef8-a980-effcbbaaa2dd/details">Details</a><br>
+                </td>
+            </tr>
+            <tr>
+                <td class="dashboard-match-history-table-loss-cell">FORFEIT</td>
+                <td>13 Jan 02:12 pm</td>
+                <td>Bo3 sets (first to 5)</td>
+                <td><a href="/users/eg">randoa2mon (2030)</a></td>
+                <td><a href="/battle/26638c2e-446c-4ef8-a980-effcbbaaa2dd/details">Details</a></td>
+            </tr>
+        </table>
     </div>
 {% endblock %}

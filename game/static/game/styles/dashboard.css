@@ -62,10 +62,45 @@ body {
 }
 
 .dashboard-elo-box-username {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
 
+.dashboard-elo-box-username:hover {
+    text-decoration: underline;
 }
 
 .dashboard-elo-box-elo {
     margin: 0;
     font-size: 70px;
+}
+
+.dashboard-match-history {
+    width: 100%;
+}
+
+.dashboard-match-history-table {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: left;
+}
+
+.dashboard-match-history-table td {
+    padding: 8px;
+}
+
+.dashboard-match-history-table th {
+    padding: 8px;
+}
+
+.dashboard-match-history-table tr:nth-child(even) {
+    background-color: #403939;
+}
+
+.dashboard-match-history-table-win-cell {
+    color: #67dc57;
+}
+
+.dashboard-match-history-table-loss-cell {
+    color: #ff3c3c;
 }
