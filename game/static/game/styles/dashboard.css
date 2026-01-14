@@ -104,3 +104,51 @@ body {
 .dashboard-match-history-table-loss-cell {
     color: #ff3c3c;
 }
+
+.dashboard-start-battle {
+    margin-top: 90px;
+}
+
+.dashboard-start-battle-form {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dashboard-start-battle-form svg {
+    margin-left: 6px;
+}
+
+.dashboard-start-battle-form-dropdown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 18px;
+    background-color: #403939;
+    border: 1px solid #605252;
+    width: 100%;
+    color: #ffffff;
+    font-size: 18px;
+}
+
+.dashboard-start-battle-form-opponent {
+    border-left: none;
+    border-right: none;
+}
+.dashboard-start-battle-form-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 18px;
+    background-color: #6262ff;
+    border: 1px solid #6c6cff;
+    border-left: 1px solid #605252;
+    width: 100%;
+    color: #ffffff;
+    font-size: 18px;
+}
+
+.dashboard-start-battle-form-submit:hover {
+    background-color: #6c6cff;
+}
