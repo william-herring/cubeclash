@@ -28,8 +28,6 @@
                 <p class="dashboard-elo-box-improvement">+{{ user.elo|sub:user.previous_elo|floatformat:"0" }}</p>
             {%  elif user.elo < user.previous_elo %}
                 <p class="dashboard-elo-box-regression">-{{ user.previous_elo|sub:user.elo|floatformat:"0" }}</p>
-            {% else %}
-                <p class="dashboard-elo-box-regression">No change</p>
             {% endif %}
         </div>
     </div>

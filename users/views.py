@@ -39,32 +39,36 @@ class AuthRedirectView(View):
             return redirect('/login')
 
         token = token_response.json()['access_token']
-        print(token)
 
         user_response = requests.get('https://www.worldcubeassociation.org/api/v0/me', headers={
             'Content-Type': 'application/json',
             'Authorization': f'Bearer {token}'
         })
-        print(user_response.status_code)
 
         data = user_response.json()['me']
         print(data)
 
-        try:
-            login(request, User.objects.get(email=data['email']))
-        except User.DoesNotExist:
+        # Unfortunate workaround as cannot catch the DoesNotExist exception
+        users_result = User.objects.filter(email=data['email']).all()
+        if len(users_result) > 0:
+            login(request, users_result[0])
+        else:
             name_parts = data['name'].split(None, 1)
             user = User(
                 email=data['email'],
                 first_name=name_parts[0],
                 last_name=name_parts[1],
+                avatar=data['avatar']['thumb_url']
             )
             user.set_unusable_password()
-            if data['wca_id']:
-                User.wca_id = data['wca_id']
-                User.username = data['wca_id']
+
+            if 'wca_id' in data:
+                user.wca_id = data['wca_id']
+                user.username = data['wca_id']
             else:
-                User.username = generate_username(1)[0]
+                user.username = generate_username(1)[0]
+
+            user.save()
 
             login(request, user)
             return redirect('/profile')
