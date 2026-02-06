@@ -8,6 +8,15 @@ from .models import Battle
 class DashboardView(TemplateView):
     template_name = 'dashboard.html'
 
+class MatchmakingView(TemplateView):
+    template_name = 'matchmaking.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(MatchmakingView, self).get_context_data(**kwargs)
+        context['matchmaking_socket_id'] = self.request.GET.get('socket_id')
+
+        return context
+
 class JoinBattleView(View):
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:

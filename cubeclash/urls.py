@@ -9,5 +9,6 @@ urlpatterns = [
     path('users/',include('users.urls')),
     path('battle/', include('game.urls')),
     path('login', users.views.LoginView.as_view()),
+    path('profile', users.views.ProfileView.as_view()),
     path('account-redirect', users.views.AuthRedirectView.as_view()),
 ]

@@ -1,11 +1,12 @@
 import os
 import requests
+from django.contrib.auth.mixins import LoginRequiredMixin
 from random_username.generate import generate_username
 from django.contrib.auth import login
 from django.shortcuts import redirect
 from dotenv import load_dotenv
 from django.views import View
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DetailView
 from .models import User
 
 
@@ -71,6 +72,14 @@ class AuthRedirectView(View):
             user.save()
 
             login(request, user)
-            return redirect('/profile')
+            return redirect('/profile?editing=true')
 
         return redirect('/battle')
+
+class UserView(DetailView):
+    model = User
+    slug_url_kwarg = 'username'
+    slug_field = 'username'
+
+class ProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'login.html'

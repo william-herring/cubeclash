@@ -1,0 +1,9 @@
+{% extends 'base_generic.html' %}
+{% load static %}
+
+{% block title %}{{ object.username }}{% endblock %}
+
+{% block body %}
+    <p>{{ object.username }}</p>
+    <p>{{ object.elo }}</p>
+{% endblock %}
