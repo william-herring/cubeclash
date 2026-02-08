@@ -1,25 +1,14 @@
-{% extends 'base_generic.html' %}
+{% extends 'app_skeleton.html' %}
 {% load static %}
 {% load mathfilters %}
 
 {% block title %}Dashboard{% endblock %}
 
 {% block head %}
+    <link rel="stylesheet" href="{% static 'styles/app.css' %}">
     <link rel="stylesheet" href="{% static 'game/styles/dashboard.css' %}">
 {% endblock %}
-{% block body %}
-    <header class="dashboard-header">
-        <div>
-            <a href="/battle" class="dashboard-nav-button">Battle</a>
-            <a href="/battle/competitions" class="dashboard-nav-button">Competitions</a>
-            <a href="/rankings" class="dashboard-nav-button">Rankings</a>
-        </div>
-        <div class="dashboard-header-avatar-wrapper">
-            <a href="/profile">
-                <img class="dashboard-header-avatar" src="{{ user.avatar }}" alt="Your profile picture">
-            </a>
-        </div>
-    </header>
+{% block app_content %}
     <div class="dashboard-elo-box">
         <a class="dashboard-elo-box-username" href="/users/{{ user.get_username }}">{{ user.get_username }}</a>
         <div class="dashboard-elo-box-display">

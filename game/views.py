@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.views.generic import TemplateView
 from django.http import HttpResponse, HttpResponseForbidden
@@ -5,7 +6,7 @@ from .tasks import join_battle_queue
 from .models import Battle
 
 
-class DashboardView(TemplateView):
+class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard.html'
 
 class MatchmakingView(TemplateView):

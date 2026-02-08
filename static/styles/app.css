@@ -1,0 +1,37 @@
+body {
+    margin: 30px;
+}
+
+.app-header {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100%;
+}
+
+.app-nav-button {
+    padding: 14px 18px;
+    background-color: #403939;
+    border: 1px solid #605252;
+    color: #ffffff;
+    border-radius: 45px;
+    margin-right: 8px;
+}
+
+.app-nav-button:hover {
+    background-color: #453d3d;
+}
+
+.app-header-avatar-wrapper {
+    margin-left: auto;
+}
+
+.app-header-avatar {
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    object-position: center;
+}

@@ -1,9 +1,16 @@
-{% extends 'base_generic.html' %}
+{% extends 'app_skeleton.html' %}
 {% load static %}
 
 {% block title %}{{ object.username }}{% endblock %}
 
-{% block body %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'styles/app.css' %}">
+    <link rel="stylesheet" href="{% static 'users/styles/user_detail.css' %}">
+{% endblock %}
+{% block app_content %}
+    <div class="user-profile-banner">
+
+    </div>
     <p>{{ object.username }}</p>
     <p>{{ object.elo }}</p>
 {% endblock %}
