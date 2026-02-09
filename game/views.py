@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.views.generic import TemplateView
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponseForbidden, JsonResponse
 from .tasks import join_battle_queue
 from .models import Battle
 
@@ -19,22 +19,27 @@ class MatchmakingView(TemplateView):
         return context
 
 class JoinBattleView(View):
-    def post(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return HttpResponseForbidden()
 
-        if request.POST.get('matchmaking'):
+        if request.GET.get('opponent_type') == 'random':
             join_battle_queue.delay(
                 request.user.pk,
                 request.user.elo,
-                request.POST.get('battle_type')
+                request.GET.get('battle_type')
             )
 
         else:
             battle = Battle(
-                battle_type=request.POST.get('battle_type'),
+                battle_type=request.GET.get('battle_type'),
                 user1=request.user,
             )
             battle.save()
 
-            return HttpResponse(battle.pk, status=201)
+            return JsonResponse({
+                'message': 'Created battle',
+                'battle': {
+                    'id': battle.pk,
+                }
+            }, status=201)

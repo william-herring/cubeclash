@@ -64,8 +64,8 @@
     </div>
     <div class="dashboard-start-battle">
         <h2>Start a battle</h2>
-        <form class="dashboard-start-battle-form">
-            <select aria-label="Battle type" type="dropdown" name="battle-type" id="battle-type-select" class="dashboard-start-battle-form-dropdown">
+        <form class="dashboard-start-battle-form" action="/join">
+            <select aria-label="Battle type" type="dropdown" name="battle_type" id="battle-type-select" class="dashboard-start-battle-form-dropdown">
                 <option value="bo5">Bo5</option>
                 <option value="bo12">Bo12</option>
                 <option value="bo25">Bo25</option>
@@ -73,7 +73,7 @@
                 <option value="bo3ft5">Bo3 sets (first to 5)</option>
                 <option value="bo5ft5">Bo5 sets (first to 5)</option>
             </select>
-            <select aria-label="Opponent type" type="dropdown" name="opponent-type" id="opponent-type-select" class="dashboard-start-battle-form-dropdown dashboard-start-battle-form-opponent">
+            <select aria-label="Opponent type" type="dropdown" name="opponent_type" id="opponent-type-select" class="dashboard-start-battle-form-dropdown dashboard-start-battle-form-opponent">
                 <option value="random">Random opponent</option>
                 <option value="link">Invite with a link</option>
             </select>

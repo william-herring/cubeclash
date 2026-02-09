@@ -6,17 +6,19 @@
 {% block head %}{% endblock %}
 
 {% block body %}
-    <header class="app-header">
-        <div>
-            <a href="/battle" class="app-nav-button">Battle</a>
-            <a href="/battle/competitions" class="app-nav-button">Competitions</a>
-            <a href="/rankings" class="app-nav-button">Rankings</a>
-        </div>
-        <div class="app-header-avatar-wrapper">
-            <a href="/users/{{ user.get_username }}">
-                <img class="app-header-avatar" src="{{ user.avatar }}" alt="Your profile picture">
-            </a>
-        </div>
-    </header>
-    {% block app_content %}{% endblock %}
+    <div class="app-wrapper">
+        <header class="app-header">
+            <div>
+                <a href="/battle" class="app-nav-button">Battle</a>
+                <a href="/battle/competitions" class="app-nav-button">Competitions</a>
+                <a href="/rankings" class="app-nav-button">Rankings</a>
+            </div>
+            <div class="app-header-avatar-wrapper">
+                <a href="/users/{{ user.get_username }}">
+                    <img class="app-header-avatar" src="{{ user.avatar }}" alt="Your profile picture">
+                </a>
+            </div>
+        </header>
+        {% block app_content %}{% endblock %}
+    </div>
 {% endblock %}
