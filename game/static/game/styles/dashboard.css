@@ -83,15 +83,25 @@
 }
 
 .dashboard-start-battle-form-dropdown {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 14px 18px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    text-align: center;
+    padding: 14px 50px;
     background-color: #403939;
     border: 1px solid #605252;
     width: 100%;
     color: #ffffff;
     font-size: 18px;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1jaGV2cm9uLWRvd24taWNvbiBsdWNpZGUtY2hldnJvbi1kb3duIj48cGF0aCBkPSJtNiA5IDYgNiA2LTYiLz48L3N2Zz4=');
+    background-repeat: no-repeat;
+    background-position: right 20px center;
+    background-size: 18px;
+}
+
+.dashboard-start-battle-form-dropdown:hover {
+    cursor: pointer;
+    background-color: #453d3d;
 }
 
 .dashboard-start-battle-form-opponent {
@@ -100,16 +110,19 @@
 }
 
 .dashboard-start-battle-form-submit {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 14px 18px;
+    text-align: center;
+    padding: 14px 50px;
     background-color: #6262ff;
     border: 1px solid #6c6cff;
     border-left: 1px solid #605252;
     width: 100%;
     color: #ffffff;
     font-size: 18px;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1hcnJvdy1yaWdodC1pY29uIGx1Y2lkZS1hcnJvdy1yaWdodCI+PHBhdGggZD0iTTUgMTJoMTQiLz48cGF0aCBkPSJtMTIgNSA3IDctNyA3Ii8+PC9zdmc+');
+    background-repeat: no-repeat;
+    background-position: right 20px center;
+    background-size: 18px;
+    text-wrap: nowrap;
 }
 
 .dashboard-start-battle-form-submit:hover {
