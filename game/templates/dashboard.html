@@ -7,6 +7,7 @@
 {% block head %}
     <link rel="stylesheet" href="{% static 'styles/app.css' %}">
     <link rel="stylesheet" href="{% static 'game/styles/dashboard.css' %}">
+    <script src="{% static 'game/src/matchmaking-form-handlers.js' %}"></script>
 {% endblock %}
 {% block app_content %}
     <div class="dashboard-elo-box">
@@ -64,7 +65,7 @@
     </div>
     <div class="dashboard-start-battle">
         <h2>Start a battle</h2>
-        <form class="dashboard-start-battle-form" action="/battle/join">
+        <form class="dashboard-start-battle-form" id="start-battle-form" action="/">
             <select aria-label="Battle type" type="dropdown" name="battle_type" id="battle-type-select" class="dashboard-start-battle-form-dropdown">
                 <option value="bo5">Bo5</option>
                 <option value="bo12">Bo12</option>
