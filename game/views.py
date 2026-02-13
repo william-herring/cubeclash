@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.views.generic import TemplateView
-from django.http import HttpResponseForbidden, JsonResponse
+from django.http import HttpResponseForbidden, HttpResponseServerError, JsonResponse
 from .tasks import join_battle_queue
 from .models import Battle
 
@@ -24,11 +24,19 @@ class JoinBattleView(View):
             return HttpResponseForbidden()
 
         if request.GET.get('opponent_type') == 'random':
-            join_battle_queue.delay(
+            join_result = join_battle_queue.delay(
                 request.user.pk,
                 request.user.elo,
                 request.GET.get('battle_type')
-            )
+            ).get()
+
+            if join_result.get('status') == 'joined':
+                return JsonResponse({
+                    'message': 'Joined queue',
+                    'position_id': join_result.get('position_id'),
+                }, status=200)
+            else:
+                return HttpResponseServerError()
 
         else:
             battle = Battle(
