@@ -33,26 +33,36 @@ class MatchmakingConsumer(WebsocketConsumer):
 
             if type(matchmaking_result) == dict:
                 async_to_sync(self.channel_layer.group_send)(
-                    self.position_id, {'message': json.dumps(matchmaking_result)}
+                    self.position_id, {'type': 'matchmaking.alert', 'message': json.dumps(matchmaking_result)}
                 )
             else:
                 for battle in matchmaking_result:
                     async_to_sync(self.channel_layer.group_send)(
-                        f'{battle.type}-{battle.user1.id}', {'message': json.dumps({
-                            'status': 'success',
-                            'battle_id': battle.id,
+                        f'{battle.battle_type}-{battle.competitor_1.id}', {
+                            'type': 'matchmaking.alert',
+                            'message': json.dumps({
+                                'status': 'success',
+                                'battle_id': battle.id,
                         })}
                     )
 
                     async_to_sync(self.channel_layer.group_send)(
-                        f'{battle.type}-{battle.user2.id}', {'message': json.dumps({
-                            'status': 'success',
-                            'battle_id': battle.id,
+                        f'{battle.battle_type}-{battle.competitor_2.id}', {
+                            'type': 'matchmaking.alert',
+                            'message': json.dumps({
+                                'status': 'success',
+                                'battle_id': battle.id,
                         })}
                     )
 
+                    self.close()
+
         elif event == 'matchmaking.exit_queue':
             pass #TODO exit queue
+
+    def matchmaking_alert(self, event):
+        message = event['message']
+        self.send(text_data=json.dumps({'message': message}))
 
 
 class BattleConsumer(SyncConsumer):

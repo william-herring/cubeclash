@@ -42,6 +42,7 @@ def join_battle_queue(user_id, elo, battle_type):
 @shared_task
 def find_battles(elo_catchment, battle_type):
     matchmaking_queue_name = f'{battle_type}_{elo_catchment}_matchmaking_queue'
+    print(r.lrange(matchmaking_queue_name, 0, -1))
 
     if r.get(f'{matchmaking_queue_name}:status') == 'active':
         return {
@@ -53,18 +54,22 @@ def find_battles(elo_catchment, battle_type):
             'status': 'queue_empty'
         }
 
+
+    battle_list = []
+
     while r.llen(matchmaking_queue_name) >= 2:
         r.set(f'{matchmaking_queue_name}:status', 'active')
         user1 = json.loads(r.rpop(matchmaking_queue_name))['user_id']
         user2 = json.loads(r.rpop(matchmaking_queue_name))['user_id']
 
         battle = Battle(
-            type=battle_type,
-            user1=user1,
-            user2=user2,
+            battle_type=battle_type,
+            competitor_1_id=user1,
+            competitor_2_id=user2,
         )
         battle.save()
 
-        yield battle
+        battle_list.append(battle)
 
     r.set(f'{matchmaking_queue_name}:status', 'inactive')
+    return battle_list

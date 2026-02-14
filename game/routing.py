@@ -1,5 +1,5 @@
 from django.urls import re_path
-from .consumers import *
+from . import consumers
 
 """
  Each queued user receives a positional identifier string which is used to track their matchmaking status
@@ -10,6 +10,6 @@ from .consumers import *
 """
 
 websocket_urlpatterns = [
-    re_path(r"ws/matchmaking/(?P<position_id>\w+)/$", MatchmakingConsumer.as_asgi()),
-    re_path(r"ws/battle/(?P<battle_id>\w+)/$", BattleConsumer.as_asgi()),
+    re_path(r"^ws/matchmaking/(?P<position_id>[^/]+)/$", consumers.MatchmakingConsumer.as_asgi()),
+    re_path(r"ws/battle/(?P<battle_id>\w+)/$", consumers.BattleConsumer.as_asgi()),
 ]
