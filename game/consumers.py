@@ -1,5 +1,5 @@
 import json
-
+from django.core import serializers
 from asgiref.sync import async_to_sync
 from channels.consumer import SyncConsumer
 from channels.generic.websocket import WebsocketConsumer
@@ -36,22 +36,25 @@ class MatchmakingConsumer(WebsocketConsumer):
                     self.position_id, {'type': 'matchmaking.alert', 'message': json.dumps(matchmaking_result)}
                 )
             else:
-                for battle in matchmaking_result:
+                deserialized_result = serializers.deserialize('json', matchmaking_result)
+                for deserialized_battle in deserialized_result:
+                    battle = deserialized_battle.object
+
                     async_to_sync(self.channel_layer.group_send)(
-                        f'{battle.battle_type}-{battle.competitor_1.id}', {
+                        f'{battle.battle_type}-{battle.competitor_1}', {
                             'type': 'matchmaking.alert',
                             'message': json.dumps({
                                 'status': 'success',
-                                'battle_id': battle.id,
+                                'battle_id': str(battle.pk),
                         })}
                     )
 
                     async_to_sync(self.channel_layer.group_send)(
-                        f'{battle.battle_type}-{battle.competitor_2.id}', {
+                        f'{battle.battle_type}-{battle.competitor_2}', {
                             'type': 'matchmaking.alert',
                             'message': json.dumps({
                                 'status': 'success',
-                                'battle_id': battle.id,
+                                'battle_id': str(battle.pk),
                         })}
                     )
 

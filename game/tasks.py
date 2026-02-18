@@ -3,6 +3,7 @@ import json
 import math
 from celery import shared_task
 from django.conf import settings
+from django.core import serializers
 
 from .models import Battle
 
@@ -42,7 +43,6 @@ def join_battle_queue(user_id, elo, battle_type):
 @shared_task
 def find_battles(elo_catchment, battle_type):
     matchmaking_queue_name = f'{battle_type}_{elo_catchment}_matchmaking_queue'
-    print(r.lrange(matchmaking_queue_name, 0, -1))
 
     if r.get(f'{matchmaking_queue_name}:status') == 'active':
         return {
@@ -56,6 +56,7 @@ def find_battles(elo_catchment, battle_type):
 
 
     battle_list = []
+    json_battle_list = []
 
     while r.llen(matchmaking_queue_name) >= 2:
         r.set(f'{matchmaking_queue_name}:status', 'active')
@@ -70,6 +71,7 @@ def find_battles(elo_catchment, battle_type):
         battle.save()
 
         battle_list.append(battle)
+        json_battle_list = serializers.serialize('json', battle_list, fields=['battle_type', 'competitor_1', 'competitor_2'])
 
     r.set(f'{matchmaking_queue_name}:status', 'inactive')
-    return battle_list
+    return json_battle_list
