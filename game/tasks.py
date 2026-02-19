@@ -60,8 +60,8 @@ def find_battles(elo_catchment, battle_type):
 
     while r.llen(matchmaking_queue_name) >= 2:
         r.set(f'{matchmaking_queue_name}:status', 'active')
-        user1 = json.loads(r.rpop(matchmaking_queue_name))['user_id']
         user2 = json.loads(r.rpop(matchmaking_queue_name))['user_id']
+        user1 = json.loads(r.rpop(matchmaking_queue_name))['user_id']
 
         battle = Battle(
             battle_type=battle_type,

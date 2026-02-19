@@ -9,6 +9,9 @@ from .models import Battle
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard.html'
 
+class BattleView(LoginRequiredMixin, TemplateView):
+    template_name = 'battle.html'
+
 class JoinBattleView(View):
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:

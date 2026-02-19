@@ -8,17 +8,18 @@ class Battle(models.Model):
     battle_type = models.CharField(max_length=10, default='bo5')
     start = models.DateTimeField(auto_now_add=True)
     end = models.DateTimeField(null=True)
-    competitor_1 = models.OneToOneField(
+    competitor_1 = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        related_name='battle_competitor_1'
     )
-    competitor_2 = models.OneToOneField(
+    competitor_2 = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         null=True,
         related_name='battle_competitor_2',
     )
-    winner = models.OneToOneField(
+    winner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         null=True,

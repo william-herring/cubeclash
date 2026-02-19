@@ -40,8 +40,15 @@ class MatchmakingConsumer(WebsocketConsumer):
                 for deserialized_battle in deserialized_result:
                     battle = deserialized_battle.object
 
+                    print(f'{battle.battle_type}-{self.elo_catchment}-{battle.competitor_1.pk}', {
+                            'type': 'matchmaking.alert',
+                            'message': json.dumps({
+                                'status': 'success',
+                                'battle_id': str(battle.pk),
+                        })})
+
                     async_to_sync(self.channel_layer.group_send)(
-                        f'{battle.battle_type}-{battle.competitor_1}', {
+                        f'{battle.battle_type}-{self.elo_catchment}-{battle.competitor_1.pk}', {
                             'type': 'matchmaking.alert',
                             'message': json.dumps({
                                 'status': 'success',
@@ -50,7 +57,7 @@ class MatchmakingConsumer(WebsocketConsumer):
                     )
 
                     async_to_sync(self.channel_layer.group_send)(
-                        f'{battle.battle_type}-{battle.competitor_2}', {
+                        f'{battle.battle_type}-{self.elo_catchment}-{battle.competitor_2.pk}', {
                             'type': 'matchmaking.alert',
                             'message': json.dumps({
                                 'status': 'success',

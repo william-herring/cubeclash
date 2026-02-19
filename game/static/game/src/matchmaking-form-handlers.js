@@ -1,10 +1,11 @@
 const handleMatchmakingEvent = (message) => {
+    console.log(message['status']);
+
     if (message.status === 'success') {
-        window.location.replace('/battle/' + message['battle_id']);
+        window.location.replace('/battle/go/' + message['battle_id']);
     }
     else {
         // TODO Handle loop_already_initiated and queue_empty status
-        console.log(message.status);
     }
 };
 
@@ -33,7 +34,7 @@ window.onload = () => {
 
                 socket.onmessage = (e) => {
                     const messageData = JSON.parse(e.data).message;
-                    console.log('Matchmaking: ' + e.data);
+                    console.log('Received: ' + messageData);
                     handleMatchmakingEvent(messageData);
                 };
             }
