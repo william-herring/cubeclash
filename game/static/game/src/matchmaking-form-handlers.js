@@ -1,8 +1,6 @@
 const handleMatchmakingEvent = (message) => {
-    console.log(message['status']);
-
     if (message.status === 'success') {
-        window.location.replace('/battle/go/' + message['battle_id']);
+        window.location.replace('/battle/b/' + message['battle_id']);
     }
     else {
         // TODO Handle loop_already_initiated and queue_empty status
@@ -33,9 +31,8 @@ window.onload = () => {
                 }));
 
                 socket.onmessage = (e) => {
-                    const messageData = JSON.parse(e.data).message;
-                    console.log('Received: ' + messageData);
-                    handleMatchmakingEvent(messageData);
+                    const data = JSON.parse(e.data);
+                    handleMatchmakingEvent(JSON.parse(data.message));
                 };
             }
         });

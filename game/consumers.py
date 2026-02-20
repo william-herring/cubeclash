@@ -15,9 +15,9 @@ class MatchmakingConsumer(WebsocketConsumer):
         self.elo_catchment = position_id.split('-')[1]
         self.user_id = position_id.split('-')[2]
 
-        # EXAMPLE POSITIONAL ID "bo5-1000-4" where user 4 is queuing for a bo5 match within the 1000-2000 ELO catchment
+        self.queue_group_name = f'matchmaking_{self.battle_type}_{self.elo_catchment}'
 
-        async_to_sync(self.channel_layer.group_add)(self.position_id, self.channel_name)
+        async_to_sync(self.channel_layer.group_add)(self.queue_group_name, self.channel_name)
 
         self.accept()
 
@@ -29,49 +29,14 @@ class MatchmakingConsumer(WebsocketConsumer):
 
     def handle_event(self, event):
         if event == 'matchmaking.ready':
-            matchmaking_result = find_battles.delay(self.elo_catchment, self.battle_type).get()
-
-            if type(matchmaking_result) == dict:
-                async_to_sync(self.channel_layer.group_send)(
-                    self.position_id, {'type': 'matchmaking.alert', 'message': json.dumps(matchmaking_result)}
-                )
-            else:
-                deserialized_result = serializers.deserialize('json', matchmaking_result)
-                for deserialized_battle in deserialized_result:
-                    battle = deserialized_battle.object
-
-                    print(f'{battle.battle_type}-{self.elo_catchment}-{battle.competitor_1.pk}', {
-                            'type': 'matchmaking.alert',
-                            'message': json.dumps({
-                                'status': 'success',
-                                'battle_id': str(battle.pk),
-                        })})
-
-                    async_to_sync(self.channel_layer.group_send)(
-                        f'{battle.battle_type}-{self.elo_catchment}-{battle.competitor_1.pk}', {
-                            'type': 'matchmaking.alert',
-                            'message': json.dumps({
-                                'status': 'success',
-                                'battle_id': str(battle.pk),
-                        })}
-                    )
-
-                    async_to_sync(self.channel_layer.group_send)(
-                        f'{battle.battle_type}-{self.elo_catchment}-{battle.competitor_2.pk}', {
-                            'type': 'matchmaking.alert',
-                            'message': json.dumps({
-                                'status': 'success',
-                                'battle_id': str(battle.pk),
-                        })}
-                    )
-
-                    self.close()
+            find_battles.delay(self.elo_catchment, self.battle_type)
 
         elif event == 'matchmaking.exit_queue':
             pass #TODO exit queue
 
     def matchmaking_alert(self, event):
         message = event['message']
+        print(message)
         self.send(text_data=json.dumps({'message': message}))
 
 

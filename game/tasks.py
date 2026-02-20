@@ -5,6 +5,9 @@ from celery import shared_task
 from django.conf import settings
 from django.core import serializers
 
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
 from .models import Battle
 
 r = redis.StrictRedis.from_url(settings.CELERY_BROKER_URL)
@@ -43,20 +46,30 @@ def join_battle_queue(user_id, elo, battle_type):
 @shared_task
 def find_battles(elo_catchment, battle_type):
     matchmaking_queue_name = f'{battle_type}_{elo_catchment}_matchmaking_queue'
+    queue_group_name = f'matchmaking_{battle_type}_{elo_catchment}'
+    channel_layer = get_channel_layer()
 
     if r.get(f'{matchmaking_queue_name}:status') == 'active':
-        return {
+        result = {
             'status': 'loop_already_initiated'
         }
+        async_to_sync(channel_layer.group_send)(
+            queue_group_name, {'type': 'matchmaking.alert', 'message': json.dumps(result)}
+        )
+        return result
 
     if r.llen(matchmaking_queue_name) < 2:
-        return {
+        result = {
             'status': 'queue_empty'
         }
+        async_to_sync(channel_layer.group_send)(
+            queue_group_name, {'type': 'matchmaking.alert', 'message': json.dumps(result)}
+        )
+        return result
 
 
     battle_list = []
-    json_battle_list = []
+    result = []
 
     while r.llen(matchmaking_queue_name) >= 2:
         r.set(f'{matchmaking_queue_name}:status', 'active')
@@ -71,7 +84,16 @@ def find_battles(elo_catchment, battle_type):
         battle.save()
 
         battle_list.append(battle)
-        json_battle_list = serializers.serialize('json', battle_list, fields=['battle_type', 'competitor_1', 'competitor_2'])
+        result = serializers.serialize('json', battle_list, fields=['battle_type', 'competitor_1', 'competitor_2'])
+        async_to_sync(channel_layer.group_send)(
+            queue_group_name, {
+                'type': 'matchmaking.alert',
+                'message': json.dumps({
+                    'status': 'success',
+                    'battle_id': str(battle.pk),
+                })}
+        )
 
     r.set(f'{matchmaking_queue_name}:status', 'inactive')
-    return json_battle_list
+
+    return result
