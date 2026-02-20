@@ -128,3 +128,55 @@
 .dashboard-start-battle-form-submit:hover {
     background-color: #6c6cff;
 }
+
+.dashboard-matchmaking-loading-wrapper {
+    display: none;
+}
+
+.dashboard-matchmaking-loading {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.dashboard-matchmaking-loading-message {
+    text-align: center;
+    background-color: #403939;
+    padding: 14px 50px;
+    border: 1px solid #605252;
+    width: 100%;
+}
+
+.dashboard-matchmaking-loading-message::after {
+  display: inline-block;
+  animation: elipsis steps(1,end) 1.5s infinite;
+  content: '';
+}
+
+@keyframes elipsis {
+    0%   { content: ''; }
+    25%  { content: '.'; }
+    50%  { content: '..'; }
+    75%  { content: '...'; }
+    100% { content: ''; }
+}
+
+.dashboard-matchmaking-cancel-button {
+    text-align: center;
+    padding: 14px 50px;
+    background-color: rgb(220, 59, 59);
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    border-left: #605252;
+    color: #ffffff;
+    font-size: 18px;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imx1Y2lkZSBsdWNpZGUteC1pY29uIGx1Y2lkZS14Ij48cGF0aCBkPSJNMTggNiA2IDE4Ii8+PHBhdGggZD0ibTYgNiAxMiAxMiIvPjwvc3ZnPg==');
+    background-repeat: no-repeat;
+    background-position: right 20px center;
+    background-size: 18px;
+    text-wrap: nowrap;
+}
+
+.dashboard-matchmaking-cancel-button:hover {
+    background-color: rgb(216, 74, 74);
+
+}

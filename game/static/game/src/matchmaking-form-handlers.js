@@ -9,6 +9,7 @@ const handleMatchmakingEvent = (message) => {
 
 window.onload = () => {
     const startBattleForm = document.getElementById('start-battle-form');
+    const matchmakingLoadingWrapper = document.getElementById('matchmaking-loading-wrapper');
 
     startBattleForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -20,6 +21,9 @@ window.onload = () => {
             'battle_type': battleType,
             'opponent_type': opponentType,
         })).then(async (res) => {
+            startBattleForm.style.setProperty('display', 'none');
+            matchmakingLoadingWrapper.style.setProperty('display', 'block');
+
             const data = await res.json();
 
             if (opponentType === 'random') {
