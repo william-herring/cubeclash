@@ -1,11 +1,34 @@
 {% extends 'app_skeleton.html' %}
 {% load static %}
+{% load mathfilters %}
 
 {% block title %}Battle{% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'styles/app.css' %}">
+    <link rel="stylesheet" href="{% static 'game/styles/battle.css' %}">
 {% endblock %}
 {% block app_content %}
-    <h1>This is a battle.</h1>
+    <div class="battle-info-panel">
+        <div class="battle-competitor-avatars-container">
+            <span class="battle-competitor-avatar">
+                <img src="{{ user.avatar }}" alt="{{ user.username }}'s avatar">
+            </span>
+            <span class="battle-competitor-avatar">
+                <img src="{{ user.avatar }}" alt="{{ user.username }}'s avatar">
+            </span>
+        </div>
+        <span>
+            <a class="battle-competitor-username" href="/users/{{ user.get_username }}" target="_blank">{{ user.username }}</a> <span class="battle-competitor-elo">({{ user.elo|floatformat:"0" }})</span>
+            vs.
+            <a class="battle-competitor-username" href="/users/{{ PLACEHOLDER }}" target="_blank">admin</a> <span class="battle-competitor-elo">(1722)</span>
+        </span>
+        <button class="battle-icon-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ffffff" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings2-icon lucide-settings-2"><path d="M14 17H5"></path><path d="M19 7h-9"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
+        </button>
+    </div>
+    <div class="battle-scramble-box">
+        <span class="battle-breadcrumb">Solve 1</span>
+        <span class="battle-scramble">L2 U' F' L' D' B' U' R' U' F2 D' F2 L2 D' F2 R2 D2 R2 U' B2 R'</span>
+    </div>
 {%  endblock %}

@@ -1,0 +1,79 @@
+.battle-scramble-box {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.battle-scramble {
+    padding: 16px;
+    text-align: center;
+    font-size: 32px;
+    width: 75%;
+}
+
+.battle-breadcrumb {
+    font-size: 16px;
+    padding: 6px 12px;
+    text-align: center;
+    background-color: #403939;
+    border: 1px solid #605252;
+    color: #ffffff;
+    border-radius: 45px;
+    margin-right: 8px;
+}
+
+.battle-info-panel {
+    display: flex;
+    align-items: center;
+    margin-top: 0.83em;
+}
+
+.battle-icon-button {
+    all: unset;
+    margin-left: auto;
+    border-radius: 50%;
+    padding: 12px;
+}
+
+.battle-icon-button:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.battle-competitor-avatars-container {
+    margin-left: 30px;
+    margin-right: 40px;
+    display: inline-flex;
+    flex-direction: row;
+}
+
+.battle-competitor-username:hover {
+    text-decoration: underline;
+}
+
+.battle-competitor-elo {
+    color: #917c7c;
+}
+
+.battle-competitor-avatar {
+    border-radius: 50%;
+    position: relative;
+    border: 4px solid #201d1d;
+    width: 48px;
+    height: 48px;
+    overflow: hidden;
+}
+
+.battle-competitor-avatar:last-child {
+  margin-left: -84px;
+}
+
+.battle-competitor-avatar img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
