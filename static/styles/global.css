@@ -23,6 +23,10 @@ button:hover {
     cursor: pointer;
 }
 
+th {
+    font-weight: 500;
+}
+
 .copyright-footer {
     position: fixed;
     text-align: right;

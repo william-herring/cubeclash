@@ -15,14 +15,12 @@
 }
 
 .battle-breadcrumb {
-    font-size: 16px;
     padding: 6px 12px;
     text-align: center;
     background-color: #403939;
     border: 1px solid #605252;
     color: #ffffff;
     border-radius: 45px;
-    margin-right: 8px;
 }
 
 .battle-info-panel {
@@ -76,4 +74,65 @@
     height: 100%;
     object-fit: cover;
     object-position: center;
+}
+
+.battle-timer-box {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.battle-timer-text {
+    font-size: 64px;
+    padding: 20px;
+}
+
+.battle-timer-keyboard-hint {
+    padding: 9px 14px;
+    text-align: center;
+    background-color: #403939;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.battle-draw-scramble {
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+}
+
+.battle-results-panel {
+    text-align: center;
+    position: fixed;
+    bottom: 40px;
+    left: 30px;
+}
+
+.battle-score {
+    margin-bottom: 16px;
+}
+
+.battle-score span {
+    margin: 0 4px;
+}
+
+.battle-results-table {
+    font-size: 18px;
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+}
+
+.battle-results-table td {
+    padding: 8px;
+}
+
+.battle-results-table th {
+    padding: 8px;
+}
+
+.battle-results-table tr:nth-child(even) {
+    background-color: #403939;
 }
