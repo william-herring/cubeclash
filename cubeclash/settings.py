@@ -47,6 +47,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'cubeclash.urls'
+LOGIN_URL = '/login'
 
 TEMPLATES = [
     {
