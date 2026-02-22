@@ -1,11 +1,64 @@
 {% extends 'app_skeleton.html' %}
 {% load static %}
+{% load mathfilters %}
 
 {% block title %}Battle{% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'styles/app.css' %}">
+    <link rel="stylesheet" href="{% static 'game/styles/battle.css' %}">
 {% endblock %}
 {% block app_content %}
-    <h1>This is a battle.</h1>
+    <div class="battle-info-panel">
+        <div class="battle-competitor-avatars-container">
+            <span class="battle-competitor-avatar">
+                <img src="{{ user.avatar }}" alt="{{ user.username }}'s avatar">
+            </span>
+            <span class="battle-competitor-avatar">
+                <img src="{{ user.avatar }}" alt="{{ user.username }}'s avatar">
+            </span>
+        </div>
+        <span>
+            <a class="battle-competitor-username" href="/users/{{ user.get_username }}" target="_blank">{{ user.username }}</a> <span class="battle-competitor-elo">({{ user.elo|floatformat:"0" }})</span>
+            vs.
+            <a class="battle-competitor-username" href="/users/{{ PLACEHOLDER }}" target="_blank">admin</a> <span class="battle-competitor-elo">(1722)</span>
+        </span>
+        <button class="battle-icon-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ffffff" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings2-icon lucide-settings-2"><path d="M14 17H5"></path><path d="M19 7h-9"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
+        </button>
+    </div>
+    <div class="battle-scramble-box">
+        <span class="battle-breadcrumb">Solve 1</span>
+        <span class="battle-scramble">L2 U' F' L' D' B' U' R' U' F2 D' F2 L2 D' F2 R2 D2 R2 U' B2 R'</span>
+    </div>
+    <div class="battle-timer-box">
+        <span class="battle-timer-text">
+            0.00
+        </span>
+        <span class="battle-timer-keyboard-hint">
+            Hold and release space bar to begin inspection
+        </span>
+    </div>
+    <div class="battle-results-panel">
+        <div class="battle-score">
+            {{ user.get_username }}
+            <span class="battle-breadcrumb">0 • 0</span>
+            admin
+        </div>
+        <table class="battle-results-table">
+            <tr>
+                <th>Solve</th>
+                <th>{{ user.get_username }} (0)</th>
+                <th>admin (0)</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+        </table>
+    </div>
+    <div class="battle-draw-scramble">
+        <img alt="scramble" width="210px" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzk2IiBoZWlnaHQ9IjI5NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cG9seWdvbiBwb2ludHM9IjEwMywyMDMgMTAzLDIzMyAxMzMsMjMzIDEzMywyMDMiIHN0eWxlPSJmaWxsOiNmZmY7c3Ryb2tlOiMwMDA7IiAvPjxwb2x5Z29uIHBvaW50cz0iMTAzLDIzMyAxMDMsMjYzIDEzMywyNjMgMTMzLDIzMyIgc3R5bGU9ImZpbGw6I2YwMDtzdHJva2U6IzAwMDsiIC8+PHBvbHlnb24gcG9pbnRzPSIxMDMsMjYzIDEwMywyOTMgMTMzLDI5MyAxMzMsMjYzIiBzdHlsZT0iZmlsbDojZmYwO3N0cm9rZTojMDAwOyIgLz48cG9seWdvbiBwb2ludHM9IjEzMywyMDMgMTMzLDIzMyAxNjMsMjMzIDE2MywyMDMiIHN0eWxlPSJmaWxsOiNmZjA7c3Ryb2tlOiMwMDA7IiAvPjxwb2x5Z29uIHBvaW50cz0iMTMzLDIzMyAxMzMsMjYzIDE2MywyNjMgMTYzLDIzMyIgc3R5bGU9ImZpbGw6I2ZmMDtzdHJva2U6IzAwMDsiIC8+PHBvbHlnb24gcG9pbnRzPSIxMzMsMjYzIDEzMywyOTMgMTYzLDI5MyAxNjMsMjYzIiBzdHlsZT0iZmlsbDojMGQwO3N0cm9rZTojMDAwOyIgLz48cG9seWdvbiBwb2ludHM9IjE2MywyMDMgMTYzLDIzMyAxOTMsMjMzIDE5MywyMDMiIHN0eWxlPSJmaWxsOiNmZjA7c3Ryb2tlOiMwMDA7IiAvPjxwb2x5Z29uIHBvaW50cz0iMTYzLDIzMyAxNjMsMjYzIDE5MywyNjMgMTkzLDIzMyIgc3R5bGU9ImZpbGw6I2ZmZjtzdHJva2U6IzAwMDsiIC8+PHBvbHlnb24gcG9pbnRzPSIxNjMsMjYzIDE2MywyOTMgMTkzLDI5MyAxOTMsMjYzIiBzdHlsZT0iZmlsbDojZmZmO3N0cm9rZTojMDAwOyIgLz48cG9seWdvbiBwb2ludHM9IjMsMTAzIDMsMTMzIDMzLDEzMyAzMywxMDMiIHN0eWxlPSJmaWxsOiNmZjA7c3Ryb2tlOiMwMDA7IiAvPjxwb2x5Z29uIHBvaW50cz0iMywxMzMgMywxNjMgMzMsMTYzIDMzLDEzMyIgc3R5bGU9ImZpbGw6I2ZhMDtzdHJva2U6IzAwMDsiIC8+PHBvbHlnb24gcG9pbnRzPSIzLDE2MyAzLDE5MyAzMywxOTMgMzMsMTYzIiBzdHlsZT0iZmlsbDojZjAwO3N0cm9rZTojMDAwOyIgLz48cG9seWdvbiBwb2ludHM9IjMzLDEwMyAzMywxMzMgNjMsMTMzIDYzLDEwMyIgc3R5bGU9ImZpbGw6IzBkMDtzdHJva2U6IzAwMDsiIC8+PHBvbHlnb24gcG9pbnRzPSIzMywxMzMgMzMsMTYzIDYzLDE2MyA2MywxMzMiIHN0eWxlPSJmaWxsOiNmYTA7c3Ryb2tlOiMwMDA7IiAvPjxwb2x5Z29uIHBvaW50cz0iMzMsMTYzIDMzLDE5MyA2MywxOTMgNjMsMTYzIiBzdHlsZT0iZmlsbDojMDBmO3N0cm9rZTojMDAwOyIgLz48cG9seWdvbiBwb2ludHM9IjYzLDEwMyA2MywxMzMgOTMsMTMzIDkzLDEwMyIgc3R5bGU9ImZpbGw6I2YwMDtzdHJva2U6IzAwMDsiIC8+PHBvbHlnb24gcG9pbnRzPSI2MywxMzMgNjMsMTYzIDkzLDE2MyA5MywxMzMiIHN0eWxlPSJmaWxsOiMwZDA7c3Ryb2tlOiMwMDA7IiAvPjxwb2x5Z29uIHBvaW50cz0iNjMsMTYzIDYzLDE5MyA5MywxOTMgOTMsMTYzIiBzdHlsZT0iZmlsbDojZmEwO3N0cm9rZTojMDAwOyIgLz48cG9seWdvbiBwb2ludHM9IjMwMywxMDMgMzAzLDEzMyAzMzMsMTMzIDMzMywxMDMiIHN0eWxlPSJmaWxsOiNmZjA7c3Ryb2tlOiMwMDA7IiAvPjxwb2x5Z29uIHBvaW50cz0iMzAzLDEzMyAzMDMsMTYzIDMzMywxNjMgMzMzLDEzMyIgc3R5bGU9ImZpbGw6I2YwMDtzdHJva2U6IzAwMDsiIC8+PHBvbHlnb24gcG9pbnRzPSIzMDMsMTYzIDMwMywxOTMgMzMzLDE5MyAzMzMsMTYzIiBzdHlsZT0iZmlsbDojZjAwO3N0cm9rZTojMDAwOyIgLz48cG9seWdvbiBwb2ludHM9IjMzMywxMDMgMzMzLDEzMyAzNjMsMTMzIDM2MywxMDMiIHN0eWxlPSJmaWxsOiNmYTA7c3Ryb2tlOiMwMDA7IiAvPjxwb2x5Z29uIHBvaW50cz0iMzMzLDEzMyAzMzMsMTYzIDM2MywxNjMgMzYzLDEzMyIgc3R5bGU9ImZpbGw6IzAwZjtzdHJva2U6IzAwMDsiIC8+PHBvbHlnb24gcG9pbnRzPSIzMzMsMTYzIDMzMywxOTMgMzYzLDE5MyAzNjMsMTYzIiBzdHlsZT0iZmlsbDojZmYwO3N0cm9rZTojMDAwOyIgLz48cG9seWdvbiBwb2ludHM9IjM2MywxMDMgMzYzLDEzMyAzOTMsMTMzIDM5MywxMDMiIHN0eWxlPSJmaWxsOiNmYTA7c3Ryb2tlOiMwMDA7IiAvPjxwb2x5Z29uIHBvaW50cz0iMzYzLDEzMyAzNjMsMTYzIDM5MywxNjMgMzkzLDEzMyIgc3R5bGU9ImZpbGw6I2ZmZjtzdHJva2U6IzAwMDsiIC8+PHBvbHlnb24gcG9pbnRzPSIzNjMsMTYzIDM2MywxOTMgMzkzLDE5MyAzOTMsMTYzIiBzdHlsZT0iZmlsbDojMGQwO3N0cm9rZTojMDAwOyIgLz48cG9seWdvbiBwb2ludHM9IjEwMywzIDEwMywzMyAxMzMsMzMgMTMzLDMiIHN0eWxlPSJmaWxsOiMwZDA7c3Ryb2tlOiMwMDA7IiAvPjxwb2x5Z29uIHBvaW50cz0iMTAzLDMzIDEwMyw2MyAxMzMsNjMgMTMzLDMzIiBzdHlsZT0iZmlsbDojZmEwO3N0cm9rZTojMDAwOyIgLz48cG9seWdvbiBwb2ludHM9IjEwMyw2MyAxMDMsOTMgMTMzLDkzIDEzMyw2MyIgc3R5bGU9ImZpbGw6IzBkMDtzdHJva2U6IzAwMDsiIC8+PHBvbHlnb24gcG9pbnRzPSIxMzMsMyAxMzMsMzMgMTYzLDMzIDE2MywzIiBzdHlsZT0iZmlsbDojZmYwO3N0cm9rZTojMDAwOyIgLz48cG9seWdvbiBwb2ludHM9IjEzMywzMyAxMzMsNjMgMTYzLDYzIDE2MywzMyIgc3R5bGU9ImZpbGw6I2ZmZjtzdHJva2U6IzAwMDsiIC8+PHBvbHlnb24gcG9pbnRzPSIxMzMsNjMgMTMzLDkzIDE2Myw5MyAxNjMsNjMiIHN0eWxlPSJmaWxsOiNmZjA7c3Ryb2tlOiMwMDA7IiAvPjxwb2x5Z29uIHBvaW50cz0iMTYzLDMgMTYzLDMzIDE5MywzMyAxOTMsMyIgc3R5bGU9ImZpbGw6IzAwZjtzdHJva2U6IzAwMDsiIC8+PHBvbHlnb24gcG9pbnRzPSIxNjMsMzMgMTYzLDYzIDE5Myw2MyAxOTMsMzMiIHN0eWxlPSJmaWxsOiMwMGY7c3Ryb2tlOiMwMDA7IiAvPjxwb2x5Z29uIHBvaW50cz0iMTYzLDYzIDE2Myw5MyAxOTMsOTMgMTkzLDYzIiBzdHlsZT0iZmlsbDojZmZmO3N0cm9rZTojMDAwOyIgLz48cG9seWdvbiBwb2ludHM9IjIwMywxMDMgMjAzLDEzMyAyMzMsMTMzIDIzMywxMDMiIHN0eWxlPSJmaWxsOiMwZDA7c3Ryb2tlOiMwMDA7IiAvPjxwb2x5Z29uIHBvaW50cz0iMjAzLDEzMyAyMDMsMTYzIDIzMywxNjMgMjMzLDEzMyIgc3R5bGU9ImZpbGw6I2ZhMDtzdHJva2U6IzAwMDsiIC8+PHBvbHlnb24gcG9pbnRzPSIyMDMsMTYzIDIwMywxOTMgMjMzLDE5MyAyMzMsMTYzIiBzdHlsZT0iZmlsbDojZmEwO3N0cm9rZTojMDAwOyIgLz48cG9seWdvbiBwb2ludHM9IjIzMywxMDMgMjMzLDEzMyAyNjMsMTMzIDI2MywxMDMiIHN0eWxlPSJmaWxsOiNmZmY7c3Ryb2tlOiMwMDA7IiAvPjxwb2x5Z29uIHBvaW50cz0iMjMzLDEzMyAyMzMsMTYzIDI2MywxNjMgMjYzLDEzMyIgc3R5bGU9ImZpbGw6I2YwMDtzdHJva2U6IzAwMDsiIC8+PHBvbHlnb24gcG9pbnRzPSIyMzMsMTYzIDIzMywxOTMgMjYzLDE5MyAyNjMsMTYzIiBzdHlsZT0iZmlsbDojMGQwO3N0cm9rZTojMDAwOyIgLz48cG9seWdvbiBwb2ludHM9IjI2MywxMDMgMjYzLDEzMyAyOTMsMTMzIDI5MywxMDMiIHN0eWxlPSJmaWxsOiNmMDA7c3Ryb2tlOiMwMDA7IiAvPjxwb2x5Z29uIHBvaW50cz0iMjYzLDEzMyAyNjMsMTYzIDI5MywxNjMgMjkzLDEzMyIgc3R5bGU9ImZpbGw6I2ZmZjtzdHJva2U6IzAwMDsiIC8+PHBvbHlnb24gcG9pbnRzPSIyNjMsMTYzIDI2MywxOTMgMjkzLDE5MyAyOTMsMTYzIiBzdHlsZT0iZmlsbDojMDBmO3N0cm9rZTojMDAwOyIgLz48cG9seWdvbiBwb2ludHM9IjEwMywxMDMgMTAzLDEzMyAxMzMsMTMzIDEzMywxMDMiIHN0eWxlPSJmaWxsOiNmZmY7c3Ryb2tlOiMwMDA7IiAvPjxwb2x5Z29uIHBvaW50cz0iMTAzLDEzMyAxMDMsMTYzIDEzMywxNjMgMTMzLDEzMyIgc3R5bGU9ImZpbGw6I2YwMDtzdHJva2U6IzAwMDsiIC8+PHBvbHlnb24gcG9pbnRzPSIxMDMsMTYzIDEwMywxOTMgMTMzLDE5MyAxMzMsMTYzIiBzdHlsZT0iZmlsbDojMDBmO3N0cm9rZTojMDAwOyIgLz48cG9seWdvbiBwb2ludHM9IjEzMywxMDMgMTMzLDEzMyAxNjMsMTMzIDE2MywxMDMiIHN0eWxlPSJmaWxsOiNmMDA7c3Ryb2tlOiMwMDA7IiAvPjxwb2x5Z29uIHBvaW50cz0iMTMzLDEzMyAxMzMsMTYzIDE2MywxNjMgMTYzLDEzMyIgc3R5bGU9ImZpbGw6IzBkMDtzdHJva2U6IzAwMDsiIC8+PHBvbHlnb24gcG9pbnRzPSIxMzMsMTYzIDEzMywxOTMgMTYzLDE5MyAxNjMsMTYzIiBzdHlsZT0iZmlsbDojMDBmO3N0cm9rZTojMDAwOyIgLz48cG9seWdvbiBwb2ludHM9IjE2MywxMDMgMTYzLDEzMyAxOTMsMTMzIDE5MywxMDMiIHN0eWxlPSJmaWxsOiNmYTA7c3Ryb2tlOiMwMDA7IiAvPjxwb2x5Z29uIHBvaW50cz0iMTYzLDEzMyAxNjMsMTYzIDE5MywxNjMgMTkzLDEzMyIgc3R5bGU9ImZpbGw6IzAwZjtzdHJva2U6IzAwMDsiIC8+PHBvbHlnb24gcG9pbnRzPSIxNjMsMTYzIDE2MywxOTMgMTkzLDE5MyAxOTMsMTYzIiBzdHlsZT0iZmlsbDojMDBmO3N0cm9rZTojMDAwOyIgLz48L3N2Zz4=">
+    </div>
 {%  endblock %}
