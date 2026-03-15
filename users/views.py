@@ -2,13 +2,16 @@ import os
 import requests
 from django.contrib.auth.mixins import LoginRequiredMixin
 from random_username.generate import generate_username
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.shortcuts import redirect
 from dotenv import load_dotenv
 from django.views import View
 from django.views.generic import TemplateView, DetailView
 from .models import User
 
+def logout_view(request):
+    logout(request)
+    return redirect('/')
 
 class LoginView(TemplateView):
     template_name = 'login.html'
@@ -82,4 +85,4 @@ class UserView(DetailView):
     slug_field = 'username'
 
 class ProfileView(LoginRequiredMixin, TemplateView):
-    template_name = 'login.html'
+    template_name = 'profile.html'

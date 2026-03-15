@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth import logout
 from django.urls import path, include
 from django.shortcuts import redirect
 import users.views
@@ -9,6 +10,7 @@ urlpatterns = [
     path('users/',include('users.urls')),
     path('battle/', include('game.urls')),
     path('login', users.views.LoginView.as_view()),
-    path('profile', users.views.ProfileView.as_view()),
+    path('profile/', users.views.ProfileView.as_view()),
+    path('logout/', users.views.logout_view),
     path('account-redirect', users.views.AuthRedirectView.as_view()),
 ]
