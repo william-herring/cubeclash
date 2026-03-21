@@ -1,0 +1,8 @@
+Django~=6.0.1
+redis~=7.1.0
+celery~=5.6.2
+channels~=4.3.2
+asgiref~=3.11.0
+cubescrambler~=1.0.0
+requests~=2.32.5
+python-dotenv~=1.2.1

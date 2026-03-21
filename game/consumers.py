@@ -1,5 +1,4 @@
 import json
-from django.core import serializers
 from asgiref.sync import async_to_sync
 from channels.consumer import SyncConsumer
 from channels.generic.websocket import WebsocketConsumer

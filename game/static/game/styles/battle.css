@@ -136,3 +136,7 @@
 .battle-results-table tr:nth-child(even) {
     background-color: #403939;
 }
+
+scramble-display {
+    width: 260px;
+}

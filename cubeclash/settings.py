@@ -140,3 +140,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+TNOODLE_CLI = '/usr/local/opt/tnoodle-cli-mac_x64/bin/tnoodle'
