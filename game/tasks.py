@@ -19,6 +19,7 @@ def join_battle_queue(user_id, elo, battle_type):
 
     matchmaking_queue_name = f'{battle_type}_{elo_catchment}_matchmaking_queue'
     currently_queued_users = r.lrange('queued_users', 0, -1)
+    print(currently_queued_users)
 
     if bytes(str(user_id), 'ascii') in currently_queued_users:
         return {

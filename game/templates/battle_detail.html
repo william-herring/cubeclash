@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="{% static 'styles/app.css' %}">
     <link rel="stylesheet" href="{% static 'game/styles/battle.css' %}">
     <script src="{% static 'game/src/battle-page-util.js' %}"></script>
+    <script type="text/javascript">
+        const battleId = '{{ object.pk }}';
+        const competitorNumber = {{ user_competitor_number }};
+    </script>
+    <script src="{% static 'game/src/battle-manager.js' %}"></script>
     <script src="https://cdn.cubing.net/v0/js/scramble-display" type="module"></script>
 {% endblock %}
 {% block app_content %}
@@ -72,13 +77,25 @@
             <div class="battle-score">
                 {{ user.get_username }}
                 <span class="battle-breadcrumb">0 • 0</span>
-                admin
+                {% if user_competitor_number == 1 %}
+                    {{ object.competitor_2.username }}
+                {% else %}
+                    {{ object.competitor_1.username }}
+                {% endif %}
             </div>
             <table class="battle-results-table">
                 <tr>
                     <th>Solve</th>
-                    <th>{{ user.get_username }} (0)</th>
-                    <th>admin (0)</th>
+                    <th>
+                        {{ user.get_username }} (0)
+                    </th>
+                    <th>
+                        {% if user_competitor_number == 1 %}
+                            {{ object.competitor_2.username }} (0)
+                        {% else %}
+                            {{ object.competitor_1.username }} (0)
+                        {% endif %}
+                    </th>
                 </tr>
                 <tr>
                     <td>1</td>

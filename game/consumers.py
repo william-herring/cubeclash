@@ -62,11 +62,14 @@ class BattleConsumer(WebsocketConsumer):
                 async_to_sync(self.channel_layer.group_send)(self.battle_group_name, {
                     'type': 'battle.message', 'message': json.dumps({
                         'detail': 'competitor_joined',
+                        'competitor_number': message['competitor_number'],
+                        # Should issue match/set score and all relevant solve details in case of reconnection
                     }),
                 })
             case 'battle.submit':
                 submission_data = json.loads(message)
                 set_id = int(submission_data['set_id'])
+
                 competitor_number = int(submission_data['competitor_number'])
                 time = float(submission_data['time'])
 

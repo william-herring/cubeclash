@@ -11,5 +11,5 @@ from . import consumers
 
 websocket_urlpatterns = [
     re_path(r"^ws/matchmaking/(?P<position_id>[^/]+)/$", consumers.MatchmakingConsumer.as_asgi()),
-    re_path(r"ws/battle/(?P<battle_id>\w+)/$", consumers.BattleConsumer.as_asgi()),
+    re_path(r"^ws/battle/(?P<battle_id>[^/]+)/$", consumers.BattleConsumer.as_asgi()),
 ]
