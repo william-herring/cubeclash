@@ -38,6 +38,8 @@ class Set(models.Model):
         on_delete=models.CASCADE,
         related_name='sets',
     )
-    scramble_set = models.CharField(max_length=1000) # Semicolon-separated list of scrambles
+    scramble_set = models.CharField(max_length=4000) # Semicolon-separated list of scrambles
     competitor_1_results = models.CharField(max_length=1000) # Semicolon-separated list of formatted results
     competitor_2_results = models.CharField(max_length=1000)
+    competitor_1_score = models.IntegerField(default=0)
+    competitor_2_score = models.IntegerField(default=0)

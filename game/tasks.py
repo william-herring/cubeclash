@@ -8,8 +8,8 @@ from django.core import serializers
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
-from .models import Battle
-from .utils import init_sets
+from .models import Battle, Set
+from .utils import init_sets, get_scramble
 
 r = redis.StrictRedis.from_url(settings.CELERY_BROKER_URL)
 
@@ -19,6 +19,7 @@ def join_battle_queue(user_id, elo, battle_type):
 
     matchmaking_queue_name = f'{battle_type}_{elo_catchment}_matchmaking_queue'
     currently_queued_users = r.lrange('queued_users', 0, -1)
+    print(currently_queued_users)
 
     if bytes(str(user_id), 'ascii') in currently_queued_users:
         return {
@@ -112,3 +113,48 @@ def find_battles(elo_catchment, battle_type):
     r.set(f'{matchmaking_queue_name}:status', 'inactive')
 
     return result
+
+@shared_task
+def submit_time(battle_id, set_id, competitor_number: int, time: float):
+    set_obj = Set.objects.get(pk=set_id)
+    competitor_1_results = set_obj.competitor_1_results
+    competitor_2_results = set_obj.competitor_2_results
+    channel_layer = get_channel_layer()
+    battle_group_name = f'battle_{battle_id}'
+
+    if competitor_number == 1:
+        competitor_1_results += ';' + str(time)
+        set_obj.competitor_1_results = competitor_1_results
+    elif competitor_number == 2:
+        competitor_2_results += ';' + str(time)
+        set_obj.competitor_2_results = competitor_2_results
+
+    competitor_1_results_list = competitor_1_results.split(';')
+    competitor_2_results_list = competitor_2_results.split(';')
+    if len(competitor_1_results_list) == len(competitor_2_results_list):
+        # TODO Determine whether set has been won
+        if float(competitor_1_results_list[-1]) < float(competitor_2_results_list[-1]):
+            set_obj.competitor_1_score = set_obj.competitor_1_score + 1
+        elif float(competitor_2_results_list[-1]) < float(competitor_1_results_list[-1]):
+            set_obj.competitor_2_score = set_obj.competitor_2_score + 1
+
+        async_to_sync(channel_layer.group_send)(
+            battle_group_name, {'type': 'battle.message', 'message': json.dumps({
+                'detail': 'score_update',
+                'competitor_1_score': set_obj.competitor_1_score,
+                'competitor_2_score': set_obj.competitor_2_score,
+            })}
+        )
+
+        new_scramble = get_scramble()
+        scramble_set = set_obj.scramble_set
+        scramble_set += ';' + new_scramble
+        set_obj.scramble_set = scramble_set
+        async_to_sync(channel_layer.group_send)(
+            battle_group_name, {'type': 'battle.message', 'message': json.dumps({
+                'detail': 'scramble',
+                'scramble': new_scramble,
+            })}
+        )
+
+    set_obj.save()

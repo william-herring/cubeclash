@@ -94,7 +94,7 @@
     padding: 9px 14px;
     text-align: center;
     background-color: #403939;
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.55);
 }
 
 .battle-draw-scramble {
@@ -104,7 +104,6 @@
 }
 
 .battle-results-panel {
-    text-align: center;
     position: fixed;
     bottom: 40px;
     left: 30px;
@@ -139,4 +138,55 @@
 
 scramble-display {
     width: 260px;
+}
+
+.link-invite-waiting-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.invite-link {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.invite-link-text {
+    text-align: center;
+    padding: 14px 50px;
+    background-color: #403939;
+    border: 1px solid #605252;
+    border-right: none;
+    width: 100%;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 18px;
+    text-wrap: nowrap;
+}
+
+.invite-link-text:hover {
+    cursor: text;
+}
+
+.copy-link-button {
+    all: unset;
+    padding: 13px 14px;
+    background-color: #6262ff;
+    border: 1px solid #6c6cff;
+    border-left: 1px solid #605252;
+}
+
+.copy-link-button:hover {
+    background-color: #6c6cff;
+}
+
+.timer-text-ready {
+    color: #67dc57;
+}
+
+.timer-text-inspection {
+    color: #ff3c3c;
 }

@@ -12,10 +12,13 @@ window.onload = () => {
     const matchmakingLoadingWrapper = document.getElementById('matchmaking-loading-wrapper');
 
     startBattleForm.addEventListener('submit', (e) => {
-        e.preventDefault();
+        const opponentType = document.getElementById('opponent-type-select').value;
+
+        if (opponentType === 'random') {
+            e.preventDefault();
+        }
 
         const battleType = document.getElementById('battle-type-select').value;
-        const opponentType = document.getElementById('opponent-type-select').value;
 
         fetch('/battle/join?' + new URLSearchParams({
             'battle_type': battleType,
@@ -25,20 +28,17 @@ window.onload = () => {
             matchmakingLoadingWrapper.style.setProperty('display', 'block');
 
             const data = await res.json();
+            const positionId = data['position_id'];
+            const socket = new WebSocket(`ws://${window.location.host}/ws/matchmaking/${positionId}/`);
 
-            if (opponentType === 'random') {
-                const positionId = data['position_id'];
-                const socket = new WebSocket(`ws://${window.location.host}/ws/matchmaking/${positionId}/`);
+            socket.onopen = () => socket.send(JSON.stringify({
+                'event': 'matchmaking.ready'
+            }));
 
-                socket.onopen = () => socket.send(JSON.stringify({
-                    'event': 'matchmaking.ready'
-                }));
-
-                socket.onmessage = (e) => {
-                    const data = JSON.parse(e.data);
-                    handleMatchmakingEvent(JSON.parse(data.message));
-                };
-            }
+            socket.onmessage = (e) => {
+                const data = JSON.parse(e.data);
+                handleMatchmakingEvent(JSON.parse(data.message));
+            };
         });
     });
 };

@@ -1,0 +1,112 @@
+{% extends 'app_skeleton.html' %}
+{% load static %}
+{% load mathfilters %}
+
+{% block title %}Battle{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'styles/app.css' %}">
+    <link rel="stylesheet" href="{% static 'game/styles/battle.css' %}">
+    <script src="{% static 'game/src/battle-page-util.js' %}"></script>
+    <script type="text/javascript">
+        const battleId = '{{ object.pk }}';
+        const competitorNumber = {{ user_competitor_number }};
+        const currentScramble = "{{ current_scramble }}";
+    </script>
+    <script src="{% static 'game/src/battle-manager.js' %}"></script>
+    <script src="https://cdn.cubing.net/v0/js/scramble-display" type="module"></script>
+{% endblock %}
+{% block app_content %}
+    <div class="battle-info-panel">
+        <div class="battle-competitor-avatars-container">
+            <span class="battle-competitor-avatar">
+                {% if waiting_for_opponent %}
+                    <img src="{% static 'images/missing_avatar.png' %}" alt="Waiting for opponent's avatar">
+                {% else %}
+                    {% if user_competitor_number == 1 %}
+                        <img src="{{ object.competitor_2.avatar }}" alt="{{ object.competitor_2.username }}'s avatar">
+                    {% else %}
+                        <img src="{{ object.competitor_1.avatar }}" alt="{{ object.competitor_1.username }}'s avatar">
+                    {% endif %}
+                {% endif %}
+            </span>
+            <span class="battle-competitor-avatar">
+                <img src="{{ user.avatar }}" alt="{{ user.username }}'s avatar">
+            </span>
+        </div>
+        <span>
+            <a class="battle-competitor-username" href="/users/{{ user.get_username }}" target="_blank">{{ user.username }}</a> <span class="battle-competitor-elo">({{ user.elo|floatformat:"0" }})</span>
+            vs.
+            {% if waiting_for_opponent %}
+                <span>---</span>
+            {% else %}
+                {% if user_competitor_number == 1 %}
+                    <a class="battle-competitor-username" href="/users/{{ object.competitor_2.username }}" target="_blank">{{ object.competitor_2.username }}</a> <span class="battle-competitor-elo">({{ object.competitor_2.elo|floatformat:"0" }})</span>
+                {% else %}
+                    <a class="battle-competitor-username" href="/users/{{ object.competitor_1.username }}" target="_blank">{{ object.competitor_1.username }}</a> <span class="battle-competitor-elo">({{ object.competitor_1.elo|floatformat:"0" }})</span>
+                {% endif %}
+            {% endif %}
+        </span>
+        <button class="battle-icon-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ffffff" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings2-icon lucide-settings-2"><path d="M14 17H5"></path><path d="M19 7h-9"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
+        </button>
+    </div>
+    {%  if waiting_for_opponent %}
+        <div class="link-invite-waiting-box">
+            <span>Invite a friend to the battle by sending them the link below. Your battle will start when they join.</span>
+            <div class="invite-link">
+                <span aria-label="battle-link" id="invite-link" class="invite-link-text" type="text">{{ base_url }}{{ request.path }}</span>
+                <button class="copy-link-button" id="copy-link-button" onclick="copyInviteLink()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy-icon lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                </button>
+            </div>
+        </div>
+    {% else %}
+        <div class="battle-scramble-box">
+            <span class="battle-breadcrumb">Solve 1</span>
+            <span class="battle-scramble" id="scramble-text">{{ current_scramble }}</span>
+        </div>
+        <div class="battle-timer-box">
+            <span class="battle-timer-text" id="timer-text">
+                0.00
+            </span>
+            <span class="battle-timer-keyboard-hint">
+                Space bar to begin inspection
+            </span>
+        </div>
+        <div class="battle-results-panel">
+            <div class="battle-score">
+                {{ user.get_username }}
+                <span class="battle-breadcrumb">0 • 0</span>
+                {% if user_competitor_number == 1 %}
+                    {{ object.competitor_2.username }}
+                {% else %}
+                    {{ object.competitor_1.username }}
+                {% endif %}
+            </div>
+            <table class="battle-results-table">
+                <tr>
+                    <th>Solve</th>
+                    <th>
+                        {{ user.get_username }} (0)
+                    </th>
+                    <th>
+                        {% if user_competitor_number == 1 %}
+                            {{ object.competitor_2.username }} (0)
+                        {% else %}
+                            {{ object.competitor_1.username }} (0)
+                        {% endif %}
+                    </th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+            </table>
+        </div>
+        <div class="battle-draw-scramble">
+            <scramble-display id="scramble-display" scramble="{{ current_scramble }}"></scramble-display>
+        </div>
+    {% endif %}
+{%  endblock %}
