@@ -182,3 +182,11 @@ scramble-display {
 .copy-link-button:hover {
     background-color: #6c6cff;
 }
+
+.timer-text-ready {
+    color: #67dc57;
+}
+
+.timer-text-inspection {
+    color: #ff3c3c;
+}

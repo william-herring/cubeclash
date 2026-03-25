@@ -11,7 +11,7 @@
     <script type="text/javascript">
         const battleId = '{{ object.pk }}';
         const competitorNumber = {{ user_competitor_number }};
-        var currentScramble = '{{ current_scramble }}';
+        const currentScramble = "{{ current_scramble }}";
     </script>
     <script src="{% static 'game/src/battle-manager.js' %}"></script>
     <script src="https://cdn.cubing.net/v0/js/scramble-display" type="module"></script>
@@ -67,11 +67,11 @@
             <span class="battle-scramble" id="scramble-text">{{ current_scramble }}</span>
         </div>
         <div class="battle-timer-box">
-            <span class="battle-timer-text">
+            <span class="battle-timer-text" id="timer-text">
                 0.00
             </span>
             <span class="battle-timer-keyboard-hint">
-                Hold and release space bar to begin inspection
+                Space bar to begin inspection
             </span>
         </div>
         <div class="battle-results-panel">
