@@ -17,6 +17,27 @@ const updateScramble = (newScramble) => {
     scrambleDisplay.setAttribute('scramble', newScramble);
 }
 
+const getResultText = () => {
+    time += penalty;
+    let suffix;
+
+    if (penalty > 0) {
+        suffix = "+"
+    } else if (penalty === -1) {
+        return "DNF";
+    } else if (penalty === -2) {
+        return "DNS";
+    }
+
+    if (time < 60) {
+        return time.toFixed(2).padStart(1, '0') + suffix;
+    } else {
+        const minutes = String(Math.floor(time / 60)).padStart(1, '0');
+        const seconds = (time % 60).toFixed(1).padStart(4, '0');
+        return minutes + ':' + seconds + suffix;
+    }
+}
+
 const handleBattleEvent = (message) => {
     switch (message.detail) {
         case 'competitor_joined':
@@ -44,11 +65,12 @@ const inspectionCountdown = () => {
 
     if (inspectionTime < 1) {
         if (inspectionTime > -1) {
-            penalty = "+2";
+            penalty = 2;
+            timerText.innerHTML = "+2";
         } else {
-            penalty = "DNF";
+            penalty = -1;
+            timerText.innerHTML = "DNF";
         }
-        timerText.innerHTML = penalty;
     } else {
         timerText.innerHTML = inspectionTime | 0;
     }
@@ -99,13 +121,7 @@ window.onload = () => {
             if (time > 0) {
                 timing = false;
 
-                if (time < 60) {
-                    timerText.innerHTML = time.toFixed(2).padStart(1, '0');
-                } else {
-                    const minutes = String(Math.floor(time / 60)).padStart(1, '0');
-                    const seconds = (time % 60).toFixed(2).padStart(4, '0');
-                    timerText.innerHTML = minutes + ':' + seconds;
-                }
+                timerText.innerHTML = getResultText(); // Applies inspection penalties automatically
 
                 clearInterval(timer);
                 actionHintText.innerHTML = "Space bar to begin inspection";
@@ -115,7 +131,7 @@ window.onload = () => {
                         'event': 'battle.submit',
                         'message': {
                             'competitor_number': competitorNumber,
-                            'time': time.toFixed(2),
+                            'time': penalty < 0? penalty : time.toFixed(2),
                         }
                     })
                 );
