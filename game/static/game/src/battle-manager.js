@@ -53,13 +53,17 @@ const updateScoresHTML = () => {
         userSetScoreLabel.innerHTML = comp1SetScore;
         opponentSetScoreLabel.innerHTML = comp2SetScore;
         for (let i = comp1Times.length - 1; i >= 0; i--) {
-            rowsToAppend += `<tr><td>${i + 1}</td><td ${comp1Times[i] < comp2Times[i] ? 'class="text-green"' : ''}>${comp1Times[i]}</td><td ${comp2Times[i] < comp1Times[i] ? 'class="text-green"' : ''}>${comp2Times[i]}</td></tr>`;
+            const c1 = parseFloat(comp1Times[i]);
+            const c2 = parseFloat(comp2Times[i]);
+            rowsToAppend += `<tr><td>${i + 1}</td><td ${c1 < c2 ? 'class="text-green"' : ''}>${comp1Times[i]}</td><td ${c2 < c1 ? 'class="text-green"' : ''}>${comp2Times[i]}</td></tr>`;
         }
     } else {
         userSetScoreLabel.innerHTML = comp2SetScore;
         opponentSetScoreLabel.innerHTML = comp1SetScore;
         for (let i = comp1Times.length - 1; i >= 0; i--) {
-            rowsToAppend += `<tr><td>${i + 1}</td><td ${comp2Times[i] < comp1Times[i] ? 'class="text-green"' : ''}>${comp2Times[i]}</td><td ${comp1Times[i] < comp2Times[i] ? 'class="text-green"' : ''}>${comp1Times[i]}</td></tr>`;
+            const c1 = parseFloat(comp1Times[i]);
+            const c2 = parseFloat(comp2Times[i]);
+            rowsToAppend += `<tr><td>${i + 1}</td><td ${c2 < c1 ? 'class="text-green"' : ''}>${comp2Times[i]}</td><td ${c1 < c2 ? 'class="text-green"' : ''}>${comp1Times[i]}</td></tr>`;
         }
     }
 

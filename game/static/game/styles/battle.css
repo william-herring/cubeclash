@@ -183,10 +183,10 @@ scramble-display {
     background-color: #6c6cff;
 }
 
-.timer-text-ready {
+.text-green {
     color: #67dc57;
 }
 
-.timer-text-inspection {
+.text-red {
     color: #ff3c3c;
 }
