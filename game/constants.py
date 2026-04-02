@@ -30,3 +30,20 @@ BATTLE_FORMATS = {
         'set_type': 'ft5'
     },
 }
+
+SET_WIN_CONDITIONS = {
+    'bo5': lambda s1, s2: s1 + s2 == 5,
+    'bo12': lambda s1, s2: s1 + s2 == 12,
+    'bo25': lambda s1, s2: s1 + s2 == 25,
+    'bo100': lambda s1, s2: s1 + s2 == 100,
+    'ft5': lambda s1, s2: (s1 == 5 or s2 == 5) and abs(s1 - s2) >= 2,
+}
+
+BATTLE_WIN_CONDITIONS = {
+    'bo5': lambda s1, s2: s1 + s2 == 1,
+    'bo12': lambda s1, s2: s1 + s2 == 1,
+    'bo25': lambda s1, s2: s1 + s2 == 1,
+    'bo100': lambda s1, s2: s1 + s2 == 1,
+    'bo3ft5': lambda s1, s2: s1 + s2 == 3,
+    'bo5ft5': lambda s1, s2: s1 + s2 == 5,
+}

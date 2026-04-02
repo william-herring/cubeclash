@@ -19,6 +19,8 @@ class Battle(models.Model):
         null=True,
         related_name='battle_competitor_2',
     )
+    competitor_1_sets = models.IntegerField(default=0)
+    competitor_2_sets = models.IntegerField(default=0)
     winner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

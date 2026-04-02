@@ -8,8 +8,9 @@ from django.core import serializers
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
+from .constants import SET_WIN_CONDITIONS, BATTLE_WIN_CONDITIONS
 from .models import Battle, Set
-from .utils import init_sets, get_scramble
+from .utils import init_set, get_scramble
 
 r = redis.StrictRedis.from_url(settings.CELERY_BROKER_URL)
 
@@ -92,9 +93,9 @@ def find_battles(elo_catchment, battle_type):
         )
         battle.save()
 
-        for set_obj in init_sets(battle):
-            set_obj.battle = battle
-            set_obj.save()
+        set_obj = init_set(battle)
+        set_obj.battle = battle
+        set_obj.save()
 
         battle_list.append(battle)
         result = serializers.serialize('json', battle_list, fields=['battle_type', 'competitor_1', 'competitor_2'])
@@ -148,6 +149,40 @@ def submit_time(battle_id, competitor_number: int, time: float):
                 'competitor_2_score': set_obj.competitor_2_score,
             })}
         )
+
+        set_has_been_won = SET_WIN_CONDITIONS[set_obj.set_type](set_obj.competitor_1_score, set_obj.competitor_2_score)
+        if set_has_been_won:
+            if set_obj.competitor_1_score > set_obj.competitor_2_score:
+                battle.competitor_1_sets += 1
+            else:
+                battle.competitor_2_sets += 1
+
+            winner = None
+            battle_has_been_won = BATTLE_WIN_CONDITIONS[battle.battle_type](battle.competitor_1_sets, battle.competitor_2_sets)
+            if battle_has_been_won:
+                if battle.competitor_1_sets > battle.competitor_2_sets:
+                    winner = 'competitor_1'
+                    battle.winner = battle.competitor_1
+                else:
+                    winner = 'competitor_2'
+                    battle.winner = battle.competitor_2
+                battle.save()
+            else:
+                set_obj = init_set(battle)
+                set_obj.battle = battle
+                set_obj.save()
+
+            async_to_sync(channel_layer.group_send)(
+                battle_group_name, {'type': 'battle.message', 'message': json.dumps({
+                    'detail': 'set_finished',
+                    'battle_winner': winner,
+                    'competitor_1_sets': battle.competitor_1_sets,
+                    'competitor_2_sets': battle.competitor_2_sets,
+                })}
+            )
+
+            if winner:
+                return
 
         new_scramble = get_scramble()
         scramble_set = set_obj.scramble_set

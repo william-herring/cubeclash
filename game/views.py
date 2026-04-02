@@ -6,7 +6,7 @@ from django.views.generic import TemplateView, DetailView
 from django.http import HttpResponseForbidden, HttpResponseServerError, JsonResponse
 from .tasks import join_battle_queue
 from .models import Battle
-from .utils import init_sets
+from .utils import init_set
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
@@ -49,9 +49,9 @@ class CreateBattleView(View):
         )
         battle.save()
 
-        for set_obj in init_sets(battle):
-            set_obj.battle = battle
-            set_obj.save()
+        set_obj = init_set(battle)
+        set_obj.battle = battle
+        set_obj.save()
 
         return redirect(f'/battle/b/{battle.pk}/')
 
