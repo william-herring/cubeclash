@@ -130,13 +130,14 @@ def submit_time(battle_id, competitor_number: int, time: float):
     elif competitor_number == 2:
         competitor_2_results += ';' + str(time)
         set_obj.competitor_2_results = competitor_2_results
+    set_obj.save()
 
     competitor_1_results_list = competitor_1_results.split(';')
     competitor_2_results_list = competitor_2_results.split(';')
     if len(competitor_1_results_list) == len(competitor_2_results_list):
-        if float(competitor_1_results_list[-1]) < float(competitor_2_results_list[-1]):
+        if abs(float(competitor_1_results_list[-1])) < abs(float(competitor_2_results_list[-1])):
             set_obj.competitor_1_score = set_obj.competitor_1_score + 1
-        elif float(competitor_2_results_list[-1]) < float(competitor_1_results_list[-1]):
+        elif abs(float(competitor_2_results_list[-1])) < abs(float(competitor_1_results_list[-1])):
             set_obj.competitor_2_score = set_obj.competitor_2_score + 1
 
         async_to_sync(channel_layer.group_send)(
