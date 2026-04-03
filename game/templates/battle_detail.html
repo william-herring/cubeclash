@@ -75,7 +75,7 @@
         <div class="battle-results-panel">
             <div class="battle-score">
                 {{ user.get_username }}
-                <span class="battle-breadcrumb">0 • 0</span>
+                <span class="battle-breadcrumb" id="match-score">0 • 0</span>
                 {% if user_competitor_number == 1 %}
                     {{ object.competitor_2.username }}
                 {% else %}

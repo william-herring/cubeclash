@@ -4,8 +4,10 @@ let timerText;
 let actionHintText;
 let solveNoLabel;
 let competitorNumber;
-let comp1MatchScore, comp2MatchScore = 0;
-let comp1SetScore, comp2SetScore = 0;
+let comp1MatchScore = 0;
+let comp2MatchScore = 0;
+let comp1SetScore = 0;
+let comp2SetScore = 0;
 let comp1Times = [];
 let comp2Times = [];
 let scramble;
@@ -14,6 +16,43 @@ let timing = false;
 let inspectionTime = 16.0;
 let time = 0.0;
 let currentPenalty = 0;
+
+const handleBattleEvent = (message) => {
+    switch (message.detail) {
+        case 'competitor_joined':
+            if (message.competitor_number === 2 && competitorNumber === 1) {
+                window.location.reload();
+            }
+            break;
+        case 'score_update':
+            comp1Times.push(getResultText(message.competitor_1_latest_result, message.competitor_1_latest_result));
+            comp2Times.push(getResultText(message.competitor_2_latest_result, message.competitor_2_latest_result));
+            comp1SetScore = message.competitor_1_score;
+            comp2SetScore = message.competitor_2_score;
+            updateScoresHTML();
+            break;
+        case 'scramble':
+            scramble = message.scramble;
+            updateScramble(scramble);
+            timing = false;
+            inspectionTime = 16.0;
+            currentPenalty = 0;
+            time = 0.0;
+            actionHintText.innerHTML = "Space bar to begin inspection";
+            solveNoLabel.innerHTML = "Solve " + (comp1Times.length + 1);
+            break;
+        case 'set_finished':
+            // TODO match won
+            comp1MatchScore = message.competitor_1_sets;
+            comp2MatchScore = message.competitor_2_sets;
+            comp1SetScore = 0;
+            comp2SetScore = 0;
+            comp1Times = [];
+            comp2Times = [];
+            updateScoresHTML();
+            break;
+    }
+}
 
 const updateScramble = (newScramble) => {
     scrambleText.innerHTML = newScramble;
@@ -47,59 +86,41 @@ const updateScoresHTML = () => {
     const resultsTable = document.getElementById('results-table');
     const userSetScoreLabel = document.getElementById('user-set-score');
     const opponentSetScoreLabel = document.getElementById('opponent-set-score');
+    const matchScoreLabel = document.getElementById('match-score');
     let rowsToAppend = '';
 
     if (competitorNumber === 1) {
+        matchScoreLabel.innerHTML = `${comp1MatchScore} • ${comp2MatchScore}`;
         userSetScoreLabel.innerHTML = comp1SetScore;
         opponentSetScoreLabel.innerHTML = comp2SetScore;
-        for (let i = comp1Times.length - 1; i >= 0; i--) {
-            const c1 = parseFloat(comp1Times[i]);
-            const c2 = parseFloat(comp2Times[i]);
-            rowsToAppend += `<tr><td>${i + 1}</td><td ${c1 < c2 ? 'class="text-green"' : ''}>${comp1Times[i]}</td><td ${c2 < c1 ? 'class="text-green"' : ''}>${comp2Times[i]}</td></tr>`;
+
+        if (comp1Times.length > 0 && comp2Times.length > 0) {
+            for (let i = comp1Times.length - 1; i >= 0; i--) {
+                const c1 = parseFloat(comp1Times[i]);
+                const c2 = parseFloat(comp2Times[i]);
+                rowsToAppend += `<tr><td>${i + 1}</td><td ${c1 < c2 ? 'class="text-green"' : ''}>${comp1Times[i]}</td><td ${c2 < c1 ? 'class="text-green"' : ''}>${comp2Times[i]}</td></tr>`;
+            }
+        } else {
+            rowsToAppend = "<tr><td>1</td><td>-</td><td>-</td></tr>";
         }
     } else {
+        matchScoreLabel.innerHTML = `${comp2MatchScore} • ${comp1MatchScore}`;
         userSetScoreLabel.innerHTML = comp2SetScore;
         opponentSetScoreLabel.innerHTML = comp1SetScore;
-        for (let i = comp1Times.length - 1; i >= 0; i--) {
-            const c1 = parseFloat(comp1Times[i]);
-            const c2 = parseFloat(comp2Times[i]);
-            rowsToAppend += `<tr><td>${i + 1}</td><td ${c2 < c1 ? 'class="text-green"' : ''}>${comp2Times[i]}</td><td ${c1 < c2 ? 'class="text-green"' : ''}>${comp1Times[i]}</td></tr>`;
+
+        if (comp1Times.length > 0 && comp2Times.length > 0) {
+            for (let i = comp1Times.length - 1; i >= 0; i--) {
+                const c1 = parseFloat(comp1Times[i]);
+                const c2 = parseFloat(comp2Times[i]);
+                rowsToAppend += `<tr><td>${i + 1}</td><td ${c2 < c1 ? 'class="text-green"' : ''}>${comp2Times[i]}</td><td ${c1 < c2 ? 'class="text-green"' : ''}>${comp1Times[i]}</td></tr>`;
+            }
+        } else {
+            rowsToAppend = "<tr><td>1</td><td>-</td><td>-</td></tr>";
         }
     }
 
     const tableContent = document.getElementById('results-table-headings').outerHTML;
     resultsTable.innerHTML = tableContent + rowsToAppend;
-}
-
-const handleBattleEvent = (message) => {
-    switch (message.detail) {
-        case 'competitor_joined':
-            if (message.competitor_number === 2 && competitorNumber === 1) {
-                window.location.reload();
-            }
-            break;
-        case 'score_update':
-            comp1Times.push(getResultText(message.competitor_1_latest_result, message.competitor_1_latest_result));
-            comp2Times.push(getResultText(message.competitor_2_latest_result, message.competitor_2_latest_result));
-            comp1SetScore = message.competitor_1_score;
-            comp2SetScore = message.competitor_2_score;
-            updateScoresHTML();
-            break;
-        case 'scramble':
-            scramble = message.scramble;
-            updateScramble(scramble);
-            timing = false;
-            inspectionTime = 16.0;
-            currentPenalty = 0;
-            time = 0.0;
-            actionHintText.innerHTML = "Space bar to begin inspection";
-            solveNoLabel.innerHTML = "Solve " + (comp1Times.length + 1);
-            break;
-        case 'end_set':
-            break;
-        case 'end_match':
-            break;
-    }
 }
 
 const inspectionCountdown = () => {

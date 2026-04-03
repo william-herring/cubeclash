@@ -32,10 +32,10 @@ BATTLE_FORMATS = {
 }
 
 SET_WIN_CONDITIONS = {
-    'bo5': lambda s1, s2: s1 + s2 == 5,
-    'bo12': lambda s1, s2: s1 + s2 == 12,
-    'bo25': lambda s1, s2: s1 + s2 == 25,
-    'bo100': lambda s1, s2: s1 + s2 == 100,
+    'bo5': lambda s1, s2: s1 == 3 or s2 == 3,
+    'bo12': lambda s1, s2: s1 == 7 or s2 == 7,
+    'bo25': lambda s1, s2: s1 == 13 or s2 == 13,
+    'bo100': lambda s1, s2: s1 == 51 or s2 == 51,
     'ft5': lambda s1, s2: (s1 == 5 or s2 == 5) and abs(s1 - s2) >= 2,
 }
 
@@ -44,6 +44,6 @@ BATTLE_WIN_CONDITIONS = {
     'bo12': lambda s1, s2: s1 + s2 == 1,
     'bo25': lambda s1, s2: s1 + s2 == 1,
     'bo100': lambda s1, s2: s1 + s2 == 1,
-    'bo3ft5': lambda s1, s2: s1 + s2 == 3,
-    'bo5ft5': lambda s1, s2: s1 + s2 == 5,
+    'bo3ft5': lambda s1, s2: s1 == 2 or s2 == 2,
+    'bo5ft5': lambda s1, s2: s1 == 3 or s2 == 3,
 }

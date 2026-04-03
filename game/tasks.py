@@ -134,7 +134,6 @@ def submit_time(battle_id, competitor_number: int, time: float):
     competitor_1_results_list = competitor_1_results.split(';')
     competitor_2_results_list = competitor_2_results.split(';')
     if len(competitor_1_results_list) == len(competitor_2_results_list):
-        # TODO Determine whether set has been won
         if float(competitor_1_results_list[-1]) < float(competitor_2_results_list[-1]):
             set_obj.competitor_1_score = set_obj.competitor_1_score + 1
         elif float(competitor_2_results_list[-1]) < float(competitor_1_results_list[-1]):
@@ -166,11 +165,11 @@ def submit_time(battle_id, competitor_number: int, time: float):
                 else:
                     winner = 'competitor_2'
                     battle.winner = battle.competitor_2
-                battle.save()
             else:
                 set_obj = init_set(battle)
                 set_obj.battle = battle
                 set_obj.save()
+            battle.save()
 
             async_to_sync(channel_layer.group_send)(
                 battle_group_name, {'type': 'battle.message', 'message': json.dumps({
