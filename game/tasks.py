@@ -21,7 +21,6 @@ def join_battle_queue(user_id, elo, battle_type):
 
     matchmaking_queue_name = f'{battle_type}_{elo_catchment}_matchmaking_queue'
     currently_queued_users = r.lrange('queued_users', 0, -1)
-    print(currently_queued_users)
 
     if bytes(str(user_id), 'ascii') in currently_queued_users:
         return {
@@ -50,8 +49,25 @@ def join_battle_queue(user_id, elo, battle_type):
     position_id = f'{battle_type}-{elo_catchment}-{user_id}'
 
     return {
-        'status': 'joined',
+        'status': 'joined_queue',
         'position_id': position_id,
+    }
+
+@shared_task
+def leave_battle_queue(user_id, elo, battle_type):
+    elo_catchment = int(math.floor(elo / 1000) * 1000)
+
+    matchmaking_queue_name = f'{battle_type}_{elo_catchment}_matchmaking_queue'
+    user = json.dumps({
+        'user_id': user_id,
+        'elo': elo,
+    })
+
+    r.lrem('queued_users', 0, user_id)
+    r.lrem(matchmaking_queue_name, 0, user)
+
+    return {
+        'status': 'left_queue'
     }
 
 @shared_task

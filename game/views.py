@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.views import View
 from django.views.generic import TemplateView, DetailView
 from django.http import HttpResponseForbidden, HttpResponseServerError, JsonResponse
-from .tasks import join_battle_queue
+from .tasks import join_battle_queue, leave_battle_queue
 from .models import Battle
 from .utils import init_set
 
@@ -66,10 +66,28 @@ class JoinBattleView(View):
             request.GET.get('battle_type')
         ).get()
 
-        if join_result.get('status') == 'joined':
+        if join_result.get('status') == 'joined_queue':
             return JsonResponse({
                 'message': 'Joined queue',
                 'position_id': join_result.get('position_id'),
+            }, status=200)
+        else:
+            return HttpResponseServerError()
+
+class CancelMatchmakingView(View):
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return HttpResponseForbidden()
+
+        exit_result = leave_battle_queue.delay(
+            request.user.pk,
+            request.user.elo,
+            request.GET.get('battle_type'),
+        ).get()
+
+        if exit_result.get('status') == 'left_queue':
+            return JsonResponse({
+                'message': 'Left queue',
             }, status=200)
         else:
             return HttpResponseServerError()
