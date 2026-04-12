@@ -1,3 +1,5 @@
+import json
+
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
@@ -79,11 +81,15 @@ class CancelMatchmakingView(View):
         if not request.user.is_authenticated:
             return HttpResponseForbidden()
 
+        data = json.loads(request.body)
+
         exit_result = leave_battle_queue.delay(
             request.user.pk,
             request.user.elo,
-            request.POST.get('battle_type'),
+            data.get('battle_type'),
         ).get()
+
+        print(exit_result)
 
         if exit_result.get('status') == 'left_queue':
             return JsonResponse({

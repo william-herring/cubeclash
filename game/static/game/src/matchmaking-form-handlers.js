@@ -54,7 +54,7 @@ window.onload = () => {
                 "X-CSRFToken": csrfToken,
             },
             body: JSON.stringify({
-                "battle-type": battleType,
+                "battle_type": battleType,
             })
         }).then((res) => {
             if (res.status === 200)  {
