@@ -47,7 +47,7 @@
                     <td>{{ b.end|date:"d M g:i A" }}</td>
                     <td>{{ b.battle_type }}</td>
                     <td><a href="/users/{{ b.opponent.username }}">{{ b.opponent.username }}</a></td>
-                    <td><a href="/battle/{{ b.id }}/details">Details</a></td>
+                    <td><a href="/battle/b/{{ b.id }}/details/">Details</a></td>
                 </tr>
             {% endfor %}
         </table>

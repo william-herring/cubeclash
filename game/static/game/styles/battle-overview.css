@@ -1,0 +1,34 @@
+.overview-user-label {
+    align-items: center;
+    display: inline-flex;
+}
+
+.overview-user-label-text {
+    margin-left: 6px;
+    display: inline;
+}
+
+.battle-competitor-elo {
+    margin-left: 4px;
+}
+
+.overview-user-label-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    margin-top: 6px;
+}
+
+.overview-battle-type {
+    padding: 6px 12px;
+    text-align: center;
+    background-color: rgba(108, 108, 255, 0.33);
+    border: 1px solid rgb(80, 80, 193);
+    color: #ffffff;
+    border-radius: 45px;
+}
+
+.overview-versus-text {
+    padding: 5px;
+}

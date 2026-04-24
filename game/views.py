@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.views import View
 from django.views.generic import TemplateView, DetailView
-from django.http import HttpResponseForbidden, HttpResponseServerError, JsonResponse
+from django.http import HttpResponseForbidden, HttpResponseServerError, JsonResponse, HttpResponseNotFound
 
 from users.models import User
 from .constants import BATTLE_FORMATS
@@ -44,6 +44,14 @@ class BattleView(LoginRequiredMixin, DetailView):
     model = Battle
     template_name = 'battle_detail.html'
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        if self.object.end is not None:
+            return redirect(request.path + 'details/')
+
+        return super().get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         waiting_for_opponent = self.object.competitor_2 is None
@@ -65,6 +73,23 @@ class BattleView(LoginRequiredMixin, DetailView):
         context['user_competitor_number'] = competitor_number
 
         return context
+
+class BattleOverviewView(LoginRequiredMixin, DetailView):
+    model = Battle
+    template_name = 'battle_overview_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['battle_type_display'] = BATTLE_FORMATS[self.object.battle_type]['display']
+        return context
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        if self.object.end is None:
+            return HttpResponseNotFound()
+
+        return super().get(request, *args, **kwargs)
 
 class CreateBattleView(View):
     def post(self, request, *args, **kwargs):

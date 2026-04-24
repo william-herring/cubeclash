@@ -1,0 +1,28 @@
+{% extends 'app_skeleton.html' %}
+{% load static %}
+{% load mathfilters %}
+
+{% block title %}Battle{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'styles/app.css' %}">
+    <link rel="stylesheet" href="{% static 'game/styles/battle.css' %}">
+    <link rel="stylesheet" href="{% static 'game/styles/battle-overview.css' %}">
+{% endblock %}
+{% block app_content %}
+    <h2><span class="overview-battle-type">{{ battle_type_display }}</span> ⸱ {{ object.end|date:"d M g:i A" }}</h2>
+    <div class="overview-user-label-box">
+        <div class="overview-user-label">
+            <span class="battle-competitor-avatar">
+                <img src="{{ object.competitor_1.avatar }}" alt="{{ object.competitor_1.username }}'s avatar">
+            </span>
+            <a class="overview-user-label-text" href="/users/{{ object.competitor_1.username }}" target="_blank">{{ object.competitor_1.username }}</a> <span class="battle-competitor-elo">({{ object.competitor_1.elo|floatformat:"0" }})</span>
+        </div>
+        <span class="overview-versus-text"><strong>vs.</strong></span>
+        <div class="overview-user-label">
+            <span class="battle-competitor-avatar">
+                <img src="{{ object.competitor_2.avatar }}" alt="{{ object.competitor_2.username }}'s avatar">
+            </span>
+            <a class="overview-user-label-text" href="/users/{{ object.competitor_2.username }}" target="_blank">{{ object.competitor_2.username }}</a> <span class="battle-competitor-elo">({{ object.competitor_2.elo|floatformat:"0" }})</span>
+        </div>
+{% endblock %}
