@@ -19,7 +19,7 @@
         </p>
     </div>
     <div class="overview-set-nav">
-        <button class="overview-set-tab tab-selected">Set 1</button>
+        <button class="overview-set-tab-selected">Set 1</button>
         <button class="overview-set-tab">Set 2</button>
         <button class="overview-set-tab">Set 3</button>
     </div>
@@ -30,7 +30,6 @@
             </span>
             <a class="overview-user-label-text" href="/users/{{ object.competitor_1.username }}" target="_blank">{{ object.competitor_1.username }}</a> <span class="battle-competitor-elo">({{ object.competitor_1.elo|floatformat:"0" }})</span>
         </div>
-        <span class="overview-versus-text"><strong>vs.</strong></span>
         <div class="overview-user-label">
             <span class="battle-competitor-avatar">
                 <img src="{{ object.competitor_2.avatar }}" alt="{{ object.competitor_2.username }}'s avatar">
@@ -42,18 +41,30 @@
         <table class="overview-set-table">
             <tr>
                 <td class="overview-comp1-result-label">5.03</td>
+                <td class="overview-solve-details-button">
+                    <button><span>Details</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></button>
+                </td>
                 <td class="overview-comp2-result-label overview-set-table-win-cell">4.49</td>
             </tr>
             <tr>
                 <td class="overview-comp1-result-label overview-set-table-win-cell">5.60</td>
+                <td class="overview-solve-details-button">
+                    <button><span>Details</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></button>
+                </td>
                 <td class="overview-comp2-result-label">6.55</td>
             </tr>
             <tr>
                 <td class="overview-comp1-result-label">6.22</td>
+                <td class="overview-solve-details-button">
+                    <button><span>Details</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></button>
+                </td>
                 <td class="overview-comp2-result-label overview-set-table-win-cell">5.38</td>
             </tr>
             <tr>
                 <td class="overview-comp1-result-label">4.90</td>
+                <td class="overview-solve-details-button">
+                    <button><span>Details</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></button>
+                </td>
                 <td class="overview-comp2-result-label overview-set-table-win-cell">3.99</td>
             </tr>
         </table>

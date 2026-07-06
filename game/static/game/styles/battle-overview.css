@@ -52,16 +52,19 @@
     font-size: 18px;
 }
 
-.tab-selected {
+.overview-set-tab-selected {
+    appearance: none;
+    text-align: center;
+    padding: 14px 50px;
+    border: 1px solid #605252;
+    width: 100%;
+    color: #ffffff;
+    font-size: 18px;
     background-color: #605252;
 }
 
 .overview-set-tab:hover {
     background-color: #453d3d;
-}
-
-.overview-versus-text {
-    padding: 5px;
 }
 
 .overview-set-table {
@@ -88,6 +91,27 @@
 
 .overview-comp1-result-label {
     text-align: left;
+}
+
+.overview-solve-details-button {
+    text-align: center;
+}
+
+.overview-solve-details-button button {
+    appearance: none;
+    text-align: center;
+    border: none;
+    font-size: 1em;
+    color: #ffffff;
+    background: none;
+    display: flex;
+    justify-self: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.overview-solve-details-button:hover {
+    /*text-decoration: underline;*/
 }
 
 .overview-comp2-result-label {
